@@ -14,515 +14,569 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Inter+Tight:wght@500;600&family=Inter:wght@400;500;600&display=swap">
-<link rel="stylesheet" href="/styles.css">
-<script src="/script.js" defer></script>
+<style>
+  /* Critical first paint (before the main stylesheet arrives): paper, not white; content held
+     back so unstyled markup never flashes; the arrival veil already in place. */
+  html, body { margin: 0; background: #F2F1EC; }
+  body { visibility: hidden; }
+  .intro-stage, .petal-drift { display: none; }
+  html.intro .intro-veil { display: block; position: fixed; inset: 0; z-index: 60; background: #F2F1EC; visibility: visible; }
+</style>
+<script>
+  /* Motion gate: only hide hero content for animation when motion is allowed.
+     Failsafe: if the script never runs, reveal everything after 3.5 s. */
+  (function (d) {
+    var h = d.documentElement;
+    if (window.matchMedia && matchMedia('(prefers-reduced-motion: no-preference)').matches) {
+      h.classList.add('motion');
+      // Full-screen arrival only on a fresh visit to the top of the page.
+      if (!location.hash) h.classList.add('intro');
+      setTimeout(function () { if (!h.dataset.js) h.classList.remove('motion', 'intro'); }, 4000);
+    }
+    // Failsafe: if the stylesheet never applies, show the page anyway.
+    setTimeout(function () { if (d.body) d.body.style.visibility = 'visible'; }, 3000);
+  })(document);
+</script>
+<script type="module" src="/src/main.ts"></script>
 </head>
 <body>
-<div style="background: #F2F1EC; color: #141414; font-family: Inter, system-ui, sans-serif; font-size: 16px; line-height: 26px;">
-<div style="margin: 0 12px; border-left: 1px solid #D4D1C9; border-right: 1px solid #D4D1C9;">
+<div class="intro-veil" aria-hidden="true"></div>
+<div class="intro-stage" aria-hidden="true">
+  <svg class="formation" viewBox="0 0 480 480" role="img" aria-label="The Informatie symbol: two open corner brackets frame a lowercase i whose dot is a signal-orange square, set apart from the stem.">
+      <!-- Canonical mark (logo pack geometry, 12u grid, u = 20px here). -->
+      <g class="formation__final" transform="translate(120 120) scale(2)">
+        <path d="M10 10H50V20H20V50H10Z" fill="#141414"/>
+        <path d="M110 110H70V100H100V70H110Z" fill="#141414"/>
+        <rect x="52" y="28" width="16" height="16" fill="#F04A23"/>
+        <rect x="52" y="50" width="16" height="40" fill="#141414"/>
+      </g>
+      <!-- Pieces used only for the formation; swapped for the canonical mark when it completes. -->
+      <g class="formation__pieces" transform="translate(120 120) scale(2)" fill="#141414" aria-hidden="true">
+        <rect data-piece="n1" x="-40" y="0" width="10" height="5" fill="#D4D1C9"/>
+        <rect data-piece="n2" x="140" y="20" width="5" height="10" fill="#D4D1C9"/>
+        <rect data-piece="n3" x="-20" y="120" width="15" height="5" fill="#D4D1C9"/>
+        <rect data-piece="n4" x="130" y="-30" width="5" height="5" fill="#D4D1C9"/>
+        <rect data-piece="tlh" x="10" y="10" width="40" height="10"/>
+        <rect data-piece="tlv" x="10" y="20" width="10" height="30"/>
+        <rect data-piece="brh" x="70" y="100" width="40" height="10"/>
+        <rect data-piece="brv" x="100" y="70" width="10" height="30"/>
+        <rect data-piece="s1" x="52" y="50" width="16" height="10"/>
+        <rect data-piece="s2" x="52" y="60" width="16" height="10"/>
+        <rect data-piece="s3" x="52" y="70" width="16" height="10"/>
+        <rect data-piece="s4" x="52" y="80" width="16" height="10"/>
+        <rect data-piece="sq" x="52" y="28" width="16" height="16" fill="#F04A23"/>
+      </g>
+    </svg>
+</div>
+<a class="skip-link" href="#top">Skip to content</a>
+<div class="page">
 
-<header style="position: sticky; top: 0; z-index: 10; background: #F2F1EC; border-bottom: 1px solid #D4D1C9; display: flex; align-items: stretch; min-height: 64px;">
-<a href="#top" aria-label="Informatie home" style="flex: 1 1 auto; display: flex; align-items: center; gap: 12px; padding: 0 20px; text-decoration: none; color: #141414;">
-<svg aria-hidden="true" width="30" height="30" viewBox="0 0 30 30" fill="none" stroke="#141414" stroke-width="1.4" stroke-linejoin="round"><path d="M15 2L27 9v12l-12 7L3 21V9z"></path><path d="M3 9l12 7 12-7"></path><path d="M15 16v12"></path><path d="M9 13.5v8" stroke="#F04A23" stroke-width="2"></path><circle cx="9" cy="10" r="1.2" fill="#F04A23" stroke="none"></circle></svg>
-<span style="font-family: 'Inter Tight', Inter, sans-serif; font-size: 17px; font-weight: 600; letter-spacing: 0.04em;">INFORMATIE</span>
-</a>
-<nav class="nav-links" aria-label="Primary" style="display: flex;">
-<a class="navcell" href="#problem" style="position: relative; width: 140px; padding: 12px 16px; border-left: 1px solid #D4D1C9; font-family: 'IBM Plex Mono', monospace; font-size: 12px; letter-spacing: 0.06em; color: #141414; text-decoration: none;">PROBLEM<span aria-hidden="true" style="position: absolute; right: 8px; bottom: 4px; font-size: 10px; color: #555555;">↘</span></a>
-<a class="navcell" href="#story" style="position: relative; width: 140px; padding: 12px 16px; border-left: 1px solid #D4D1C9; font-family: 'IBM Plex Mono', monospace; font-size: 12px; letter-spacing: 0.06em; color: #141414; text-decoration: none;">HOW IT WORKS<span aria-hidden="true" style="position: absolute; right: 8px; bottom: 4px; font-size: 10px; color: #555555;">↘</span></a>
-<a class="navcell" href="#method" style="position: relative; width: 140px; padding: 12px 16px; border-left: 1px solid #D4D1C9; font-family: 'IBM Plex Mono', monospace; font-size: 12px; letter-spacing: 0.06em; color: #141414; text-decoration: none;">APPROACH<span aria-hidden="true" style="position: absolute; right: 8px; bottom: 4px; font-size: 10px; color: #555555;">↘</span></a>
-<a class="navcell" href="#closing" style="position: relative; width: 140px; padding: 12px 16px; border-left: 1px solid #D4D1C9; font-family: 'IBM Plex Mono', monospace; font-size: 12px; letter-spacing: 0.06em; color: #141414; text-decoration: none;">ABOUT</a>
-</nav>
-<a class="textcta" href="#agency" style="position: relative; width: 190px; padding: 12px 16px; border-left: 1px solid #D4D1C9; font-family: 'IBM Plex Mono', monospace; font-size: 12px; letter-spacing: 0.06em; color: #C2311A; text-decoration: none; font-weight: 500;">EXPLORE OPTIONS<span class="arr" aria-hidden="true" style="position: absolute; right: 12px; bottom: 6px; font-size: 16px;">→</span></a>
-<div class="progress" aria-hidden="true" style="position: absolute; left: 0; right: 0; bottom: -1px; height: 2px; background: #F04A23; transform-origin: left; transform: scaleX(1);"></div>
+<header class="site-header">
+  <a class="brand" href="/" aria-label="Informatie — home">
+    <svg class="brand__symbol" viewBox="0 0 120 120" aria-hidden="true"><path d="M10 10H50V20H20V50H10Z" fill="#141414"/><path d="M110 110H70V100H100V70H110Z" fill="#141414"/><rect x="52" y="28" width="16" height="16" fill="#F04A23"/><rect x="52" y="50" width="16" height="40" fill="#141414"/></svg>
+    <span class="brand__word"><svg viewBox="120 0 393 120" aria-hidden="true"><g transform="translate(144 90) scale(0.03974358974358974)"><path d="M97 0V-1118H360V0Z M776.04 -654V0H513.04V-1118H771.04V-927H784.04Q822.04 -1021 903.54 -1076.5Q985.04 -1132 1111.04 -1132Q1227.04 -1132 1313.04 -1083.0Q1399.04 -1034 1446.54 -939.5Q1494.04 -845 1494.04 -711V0H1231.04V-670Q1231.04 -782 1173.04 -845.5Q1115.04 -909 1013.04 -909Q944.04 -909 890.54 -879.0Q837.04 -849 806.54 -792.5Q776.04 -736 776.04 -654Z M2215.08 -1118V-914H1556.08V-1118ZM1720.08 0V-1223Q1720.08 -1336 1767.08 -1411.0Q1814.08 -1486 1893.58 -1523.0Q1973.08 -1560 2069.08 -1560Q2138.08 -1560 2191.58 -1549.0Q2245.08 -1538 2270.08 -1529L2216.08 -1325Q2200.08 -1331 2175.08 -1336.5Q2150.08 -1342 2118.08 -1342Q2045.08 -1342 2013.58 -1306.0Q1982.08 -1270 1982.08 -1204V0Z M2792.12 22Q2628.12 22 2508.12 -50.0Q2388.12 -122 2322.62 -252.0Q2257.12 -382 2257.12 -554Q2257.12 -727 2322.62 -857.5Q2388.12 -988 2508.12 -1060.0Q2628.12 -1132 2792.12 -1132Q2956.12 -1132 3076.12 -1060.0Q3196.12 -988 3262.12 -857.5Q3328.12 -727 3328.12 -554Q3328.12 -382 3262.12 -252.0Q3196.12 -122 3076.12 -50.0Q2956.12 22 2792.12 22ZM2792.12 -190Q2883.12 -190 2942.12 -238.5Q3001.12 -287 3030.62 -370.0Q3060.12 -453 3060.12 -554Q3060.12 -657 3030.62 -740.0Q3001.12 -823 2942.12 -871.5Q2883.12 -920 2792.12 -920Q2703.12 -920 2643.12 -871.5Q2583.12 -823 2553.62 -740.0Q2524.12 -657 2524.12 -554Q2524.12 -453 2553.62 -370.0Q2583.12 -287 2643.12 -238.5Q2703.12 -190 2792.12 -190Z M3432.16 0V-1118H3687.16V-930H3699.16Q3729.16 -1028 3804.16 -1080.5Q3879.16 -1133 3975.16 -1133Q3996.16 -1133 4023.66 -1131.0Q4051.16 -1129 4069.16 -1126V-884Q4052.16 -890 4016.16 -894.0Q3980.16 -898 3947.16 -898Q3874.16 -898 3817.16 -867.0Q3760.16 -836 3727.66 -782.0Q3695.16 -728 3695.16 -656V0Z M4127.2 0V-1118H4378.2V-927H4392.2Q4427.2 -1023 4508.2 -1077.5Q4589.2 -1132 4700.2 -1132Q4814.2 -1132 4892.2 -1077.0Q4970.2 -1022 5001.2 -927H5013.2Q5051.2 -1020 5139.2 -1076.0Q5227.2 -1132 5349.2 -1132Q5503.2 -1132 5600.7 -1034.5Q5698.2 -937 5698.2 -750V0H5434.2V-710Q5434.2 -813 5378.7 -861.5Q5323.2 -910 5243.2 -910Q5148.2 -910 5095.2 -850.5Q5042.2 -791 5042.2 -698V0H4782.2V-720Q4782.2 -807 4731.2 -858.5Q4680.2 -910 4596.2 -910Q4539.2 -910 4492.2 -881.0Q4445.2 -852 4417.7 -800.0Q4390.2 -748 4390.2 -680V0Z M6173.24 23Q6066.24 23 5981.24 -15.5Q5896.24 -54 5847.24 -129.0Q5798.24 -204 5798.24 -314Q5798.24 -408 5833.24 -470.0Q5868.24 -532 5928.74 -569.0Q5989.24 -606 6065.24 -625.5Q6141.24 -645 6222.24 -653Q6321.24 -664 6382.24 -672.0Q6443.24 -680 6470.74 -698.0Q6498.24 -716 6498.24 -754V-759Q6498.24 -840 6450.24 -885.0Q6402.24 -930 6310.24 -930Q6213.24 -930 6156.74 -888.0Q6100.24 -846 6080.24 -789L5835.24 -824Q5864.24 -926 5931.24 -994.5Q5998.24 -1063 6094.74 -1097.5Q6191.24 -1132 6308.24 -1132Q6388.24 -1132 6468.24 -1113.5Q6548.24 -1095 6615.24 -1051.0Q6682.24 -1007 6722.24 -933.0Q6762.24 -859 6762.24 -748V0H6509.24V-154H6501.24Q6477.24 -108 6433.74 -67.5Q6390.24 -27 6325.74 -2.0Q6261.24 23 6173.24 23ZM6240.24 -171Q6320.24 -171 6378.24 -202.5Q6436.24 -234 6468.24 -286.5Q6500.24 -339 6500.24 -401V-532Q6487.24 -522 6458.24 -513.5Q6429.24 -505 6392.24 -498.0Q6355.24 -491 6319.74 -486.0Q6284.24 -481 6258.24 -478Q6199.24 -470 6152.74 -451.5Q6106.24 -433 6079.24 -401.0Q6052.24 -369 6052.24 -318Q6052.24 -245 6105.24 -208.0Q6158.24 -171 6240.24 -171Z M7473.28 -1118V-914H6832.28V-1118ZM6989.28 -1384H7252.28V-336Q7252.28 -270 7281.28 -238.5Q7310.28 -207 7373.28 -207Q7390.28 -207 7411.28 -210.0Q7432.28 -213 7449.28 -217L7494.28 -11Q7452.28 2 7409.28 8.5Q7366.28 15 7323.28 15Q7167.28 15 7078.28 -67.5Q6989.28 -150 6989.28 -293Z M7577.32 0V-1118H7840.32V0Z M8488.36 22Q8320.36 22 8198.36 -48.5Q8076.36 -119 8010.86 -248.0Q7945.36 -377 7945.36 -552Q7945.36 -725 8010.36 -855.5Q8075.36 -986 8193.36 -1059.0Q8311.36 -1132 8471.36 -1132Q8574.36 -1132 8666.86 -1099.0Q8759.36 -1066 8830.86 -997.0Q8902.36 -928 8943.36 -821.5Q8984.36 -715 8984.36 -568V-486H8068.36V-663H8853.36L8730.36 -611Q8730.36 -706 8701.36 -776.5Q8672.36 -847 8615.36 -887.0Q8558.36 -927 8473.36 -927Q8388.36 -927 8328.36 -887.0Q8268.36 -847 8237.36 -779.5Q8206.36 -712 8206.36 -629V-506Q8206.36 -404 8241.86 -331.5Q8277.36 -259 8341.86 -221.0Q8406.36 -183 8492.36 -183Q8548.36 -183 8594.86 -199.0Q8641.36 -215 8674.86 -247.5Q8708.36 -280 8726.36 -328L8972.36 -299Q8948.36 -202 8883.86 -129.5Q8819.36 -57 8718.86 -17.5Q8618.36 22 8488.36 22Z" fill="#141414"/><rect x="97.0" y="-1525.7" width="263.0" height="263.0" fill="#F04A23"/><rect x="7577.3" y="-1525.7" width="263.0" height="263.0" fill="#F04A23"/></g></svg></span>
+  </a>
+  <button type="button" class="nav-toggle" aria-expanded="false" aria-controls="site-nav"><span class="nav-toggle__label">Menu</span><span class="nav-toggle__icon" aria-hidden="true"></span></button>
+  <nav class="nav" id="site-nav" aria-label="Primary">
+    <a class="nav__link" href="#problem">Problem<span aria-hidden="true">↘</span></a>
+    <a class="nav__link" href="#story">How it works<span aria-hidden="true">↘</span></a>
+    <a class="nav__link" href="#method">Approach<span aria-hidden="true">↘</span></a>
+    <a class="nav__link" href="#closing">About</a>
+  </nav>
+  <a class="nav__cta" href="#agency">Explore<span class="nav__cta-more"> options</span><span class="arr" aria-hidden="true">→</span></a>
+  <div class="progress" aria-hidden="true"><span class="progress__bar"></span></div>
 </header>
 
-<main id="top">
+<main id="top" tabindex="-1">
 
-<section aria-labelledby="hero-title">
-<div style="position: relative; border-bottom: 1px solid #D4D1C9; overflow: hidden;">
-<span aria-hidden="true" style="position: absolute; left: 10px; top: 6px; font-family: 'IBM Plex Mono', monospace; font-size: 14px; color: #555555;">+</span>
-<span aria-hidden="true" style="position: absolute; right: 10px; top: 6px; font-family: 'IBM Plex Mono', monospace; font-size: 14px; color: #555555;">+</span>
-<span aria-hidden="true" style="position: absolute; left: 10px; bottom: 6px; font-family: 'IBM Plex Mono', monospace; font-size: 14px; color: #555555;">+</span>
-<span aria-hidden="true" style="position: absolute; right: 10px; bottom: 6px; font-family: 'IBM Plex Mono', monospace; font-size: 14px; color: #555555;">+</span>
-<svg class="parallax" role="img" aria-label="Scattered sheets of information settle into three neat stacks of options, with a dashed space in front left open for your decision" viewBox="0 0 1200 520" style="display: block; width: 100%; height: auto; max-height: 620px;">
-<defs><pattern id="dots" width="24" height="24" patternUnits="userSpaceOnUse"><circle cx="1" cy="1" r="1" fill="#D4D1C9"></circle></pattern></defs>
-<rect x="0" y="-100" width="1200" height="720" fill="url(#dots)"></rect>
-<path d="M392 120H808M392 114v12M808 114v12M600 116v8" stroke="#141414" stroke-width="1" opacity="0.6"></path>
-<text x="600" y="104" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="11" letter-spacing="1" fill="#555555">FIG. 01 — FROM FRAGMENTS TO STRUCTURE</text>
-<text x="40" y="48" font-family="IBM Plex Mono, monospace" font-size="11" letter-spacing="1" fill="#555555">[01] INPUT · SCATTERED</text>
-<text x="1160" y="48" text-anchor="end" font-family="IBM Plex Mono, monospace" font-size="11" letter-spacing="1" fill="#555555">[02] OUTPUT · STRUCTURED</text>
-<polygon points="807.8,335.0 807.8,345.0 600.0,465.0 392.2,345.0 392.2,335.0 600,455" fill="#E1DED5" stroke="#141414" stroke-width="1.2" stroke-linejoin="round"></polygon>
-<polygon points="600.0,215.0 807.8,335.0 600.0,455.0 392.2,335.0" fill="#F8F7F3" stroke="#141414" stroke-width="1.2" stroke-linejoin="round"></polygon>
-<path d="M634.6 235.0L426.8 355.0M565.4 235.0L773.2 355.0M669.3 255.0L461.4 375.0M530.7 255.0L738.6 375.0M703.9 275.0L496.1 395.0M496.1 275.0L703.9 395.0M738.6 295.0L530.7 415.0M461.4 295.0L669.3 415.0M773.2 315.0L565.4 435.0M426.8 315.0L634.6 435.0" stroke="#D4D1C9" stroke-width="1"></path>
-<g class="frag" style="--dx: -197px; --dy: -134px; --r: 21deg; --d: 0.0s;"><polygon points="591.3,300.0 539.4,330.0 539.4,324.0 591.3,294.0" fill="#E6E3DB" stroke="#141414" stroke-width="1.2" stroke-linejoin="round"></polygon><polygon points="487.4,300.0 539.4,330.0 539.4,324.0 487.4,294.0" fill="#D9D5CB" stroke="#141414" stroke-width="1.2" stroke-linejoin="round"></polygon><polygon points="539.4,264.0 591.3,294.0 539.4,324.0 487.4,294.0" fill="#FBFAF7" stroke="#141414" stroke-width="1.2" stroke-linejoin="round"></polygon><path d="M530.7 279.0L561.0 296.5M518.6 286.0L540.2 298.5" stroke="#141414" stroke-width="1" opacity="0.5"></path></g>
-<g class="frag" style="--dx: 242px; --dy: -121px; --r: -20deg; --d: 0.07s;"><polygon points="591.3,284.0 539.4,314.0 539.4,308.0 591.3,278.0" fill="#E6E3DB" stroke="#141414" stroke-width="1.2" stroke-linejoin="round"></polygon><polygon points="487.4,284.0 539.4,314.0 539.4,308.0 487.4,278.0" fill="#D9D5CB" stroke="#141414" stroke-width="1.2" stroke-linejoin="round"></polygon><polygon points="539.4,248.0 591.3,278.0 539.4,308.0 487.4,278.0" fill="#FBFAF7" stroke="#141414" stroke-width="1.2" stroke-linejoin="round"></polygon><path d="M530.7 263.0L561.0 280.5M518.6 270.0L540.2 282.5" stroke="#141414" stroke-width="1" opacity="0.5"></path></g>
-<g class="frag" style="--dx: -125px; --dy: -58px; --r: 10deg; --d: 0.14s;"><polygon points="591.3,268.0 539.4,298.0 539.4,292.0 591.3,262.0" fill="#E6E3DB" stroke="#141414" stroke-width="1.2" stroke-linejoin="round"></polygon><polygon points="487.4,268.0 539.4,298.0 539.4,292.0 487.4,262.0" fill="#D9D5CB" stroke="#141414" stroke-width="1.2" stroke-linejoin="round"></polygon><polygon points="539.4,232.0 591.3,262.0 539.4,292.0 487.4,262.0" fill="#FBFAF7" stroke="#141414" stroke-width="1.2" stroke-linejoin="round"></polygon><path d="M530.7 247.0L561.0 264.5M518.6 254.0L540.2 266.5" stroke="#141414" stroke-width="1" opacity="0.5"></path></g>
-<g class="frag" style="--dx: 315px; --dy: -145px; --r: -11deg; --d: 0.21s;"><polygon points="652.0,335.0 600.0,365.0 600.0,359.0 652.0,329.0" fill="#E6E3DB" stroke="#141414" stroke-width="1.2" stroke-linejoin="round"></polygon><polygon points="548.0,335.0 600.0,365.0 600.0,359.0 548.0,329.0" fill="#D9D5CB" stroke="#141414" stroke-width="1.2" stroke-linejoin="round"></polygon><polygon points="600.0,299.0 652.0,329.0 600.0,359.0 548.0,329.0" fill="#FBFAF7" stroke="#141414" stroke-width="1.2" stroke-linejoin="round"></polygon><path d="M591.3 314.0L621.6 331.5M579.2 321.0L600.9 333.5" stroke="#141414" stroke-width="1" opacity="0.5"></path></g>
-<g class="frag" style="--dx: 190px; --dy: 39px; --r: -14deg; --d: 0.28s;"><polygon points="652.0,319.0 600.0,349.0 600.0,343.0 652.0,313.0" fill="#E6E3DB" stroke="#141414" stroke-width="1.2" stroke-linejoin="round"></polygon><polygon points="548.0,319.0 600.0,349.0 600.0,343.0 548.0,313.0" fill="#D9D5CB" stroke="#141414" stroke-width="1.2" stroke-linejoin="round"></polygon><polygon points="600.0,283.0 652.0,313.0 600.0,343.0 548.0,313.0" fill="#FBFAF7" stroke="#141414" stroke-width="1.2" stroke-linejoin="round"></polygon><path d="M591.3 298.0L621.6 315.5M579.2 305.0L600.9 317.5" stroke="#141414" stroke-width="1" opacity="0.5"></path></g>
-<g class="frag" style="--dx: -187px; --dy: -106px; --r: -24deg; --d: 0.35s;"><polygon points="652.0,303.0 600.0,333.0 600.0,327.0 652.0,297.0" fill="#E6E3DB" stroke="#141414" stroke-width="1.2" stroke-linejoin="round"></polygon><polygon points="548.0,303.0 600.0,333.0 600.0,327.0 548.0,297.0" fill="#D9D5CB" stroke="#141414" stroke-width="1.2" stroke-linejoin="round"></polygon><polygon points="600.0,267.0 652.0,297.0 600.0,327.0 548.0,297.0" fill="#FBFAF7" stroke="#141414" stroke-width="1.2" stroke-linejoin="round"></polygon><path d="M591.3 282.0L621.6 299.5M579.2 289.0L600.9 301.5" stroke="#141414" stroke-width="1" opacity="0.5"></path></g>
-<g class="frag" style="--dx: 189px; --dy: -111px; --r: -15deg; --d: 0.42s;"><polygon points="652.0,287.0 600.0,317.0 600.0,311.0 652.0,281.0" fill="#E6E3DB" stroke="#141414" stroke-width="1.2" stroke-linejoin="round"></polygon><polygon points="548.0,287.0 600.0,317.0 600.0,311.0 548.0,281.0" fill="#D9D5CB" stroke="#141414" stroke-width="1.2" stroke-linejoin="round"></polygon><polygon points="600.0,251.0 652.0,281.0 600.0,311.0 548.0,281.0" fill="#FBFAF7" stroke="#141414" stroke-width="1.2" stroke-linejoin="round"></polygon><path d="M591.3 266.0L621.6 283.5M579.2 273.0L600.9 285.5" stroke="#141414" stroke-width="1" opacity="0.5"></path></g>
-<g class="frag" style="--dx: 194px; --dy: 0px; --r: 21deg; --d: 0.49s;"><polygon points="712.6,370.0 660.6,400.0 660.6,394.0 712.6,364.0" fill="#E6E3DB" stroke="#141414" stroke-width="1.2" stroke-linejoin="round"></polygon><polygon points="608.7,370.0 660.6,400.0 660.6,394.0 608.7,364.0" fill="#D9D5CB" stroke="#141414" stroke-width="1.2" stroke-linejoin="round"></polygon><polygon points="660.6,334.0 712.6,364.0 660.6,394.0 608.7,364.0" fill="#FBFAF7" stroke="#141414" stroke-width="1.2" stroke-linejoin="round"></polygon><path d="M652.0 349.0L682.3 366.5M639.8 356.0L661.5 368.5" stroke="#141414" stroke-width="1" opacity="0.5"></path></g>
-<g class="frag" style="--dx: 142px; --dy: 56px; --r: 13deg; --d: 0.56s;"><polygon points="712.6,354.0 660.6,384.0 660.6,378.0 712.6,348.0" fill="#E6E3DB" stroke="#141414" stroke-width="1.2" stroke-linejoin="round"></polygon><polygon points="608.7,354.0 660.6,384.0 660.6,378.0 608.7,348.0" fill="#D9D5CB" stroke="#141414" stroke-width="1.2" stroke-linejoin="round"></polygon><polygon points="660.6,318.0 712.6,348.0 660.6,378.0 608.7,348.0" fill="#FBFAF7" stroke="#141414" stroke-width="1.2" stroke-linejoin="round"></polygon><path d="M652.0 333.0L682.3 350.5M639.8 340.0L661.5 352.5" stroke="#141414" stroke-width="1" opacity="0.5"></path></g>
-<g class="late">
-<polygon points="526.4,347.5 578.4,377.5 526.4,407.5 474.4,377.5" fill="#F04A23" fill-opacity="0.1" stroke="#D4361A" stroke-width="1.5" stroke-dasharray="5 4"></polygon>
-<path d="M539.4 232V191H420" fill="none" stroke="#141414" stroke-width="1"></path>
-<rect x="222" y="180" width="198" height="22" fill="#D4361A"></rect>
-<text x="230" y="195" textLength="182" lengthAdjust="spacingAndGlyphs" font-family="IBM Plex Mono, monospace" font-size="12" letter-spacing="1" fill="#FFFFFF">OPTION A · LOWER COST</text>
-<path d="M600 251V158" fill="none" stroke="#141414" stroke-width="1"></path>
-<rect x="600" y="136" width="248" height="22" fill="#D4361A"></rect>
-<text x="608" y="151" textLength="232" lengthAdjust="spacingAndGlyphs" font-family="IBM Plex Mono, monospace" font-size="12" letter-spacing="1" fill="#FFFFFF">OPTION B · MORE FLEXIBILITY</text>
-<path d="M686 341H860" fill="none" stroke="#141414" stroke-width="1"></path>
-<rect x="860" y="330" width="196" height="22" fill="#D4361A"></rect>
-<text x="868" y="345" textLength="180" lengthAdjust="spacingAndGlyphs" font-family="IBM Plex Mono, monospace" font-size="12" letter-spacing="1" fill="#FFFFFF">OPTION C · LESS RISK</text>
-</g>
-<g class="late2">
-<path d="M474.4 377.5H360" fill="none" stroke="#D4361A" stroke-width="1" stroke-dasharray="4 3"></path>
-<rect x="128" y="366" width="232" height="22" fill="#F2F1EC" stroke="#D4361A" stroke-width="1.2" stroke-dasharray="4 3"></rect>
-<text x="136" y="381" textLength="216" lengthAdjust="spacingAndGlyphs" font-family="IBM Plex Mono, monospace" font-size="12" letter-spacing="1" fill="#C2311A">YOUR DECISION · LEFT OPEN</text>
-</g>
-</svg>
-</div>
-<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1px; background: #D4D1C9; border-bottom: 1px solid #D4D1C9;">
-<div class="span2" style="grid-column: span 2; background: #F2F1EC; padding: 32px 24px; min-width: 0;">
-<h1 id="hero-title" class="h1 load-up" style="--d: .2s; margin: 0; font-family: 'Inter Tight', Inter, sans-serif; font-size: 72px; line-height: 0.95; font-weight: 600; letter-spacing: -0.02em; text-transform: uppercase; color: #141414;">Know what it means. Choose for yourself.</h1>
-</div>
-<div class="load-up" style="--d: .45s; background: #F2F1EC; display: flex; flex-direction: column; min-width: 0;">
-<p style="margin: 0; padding: 24px; font-size: 15px; line-height: 24px; color: #2B2B2B; flex: 1;">Informatie turns scattered information into clear structure — so you can see your options, weigh the trade-offs and decide on your own terms.</p>
-<a class="cta" href="#story" style="display: flex; justify-content: space-between; align-items: center; min-height: 56px; padding: 0 24px; background: #D4361A; color: #FFFFFF; text-decoration: none; font-family: 'IBM Plex Mono', monospace; font-size: 13px; letter-spacing: 0.06em; font-weight: 500;">SEE HOW IT WORKS<span class="arr" aria-hidden="true" style="font-size: 18px;">→</span></a>
-</div>
-</div>
-<div class="ticker" style="overflow: hidden; border-bottom: 1px solid #D4D1C9;">
-<div class="ticker-track">
-<ul style="list-style: none; margin: 0; padding: 0; display: flex;">
-<li style="padding: 14px 32px; font-family: 'IBM Plex Mono', monospace; font-size: 12px; letter-spacing: 0.06em; color: #2B2B2B; display: flex; gap: 10px; align-items: center; white-space: nowrap; border-right: 1px solid #D4D1C9;"><span aria-hidden="true" style="width: 9px; height: 9px; border: 1.2px solid #141414; border-radius: 50%;"></span>PLAIN MEANING FIRST</li>
-<li style="padding: 14px 32px; font-family: 'IBM Plex Mono', monospace; font-size: 12px; letter-spacing: 0.06em; color: #2B2B2B; display: flex; gap: 10px; align-items: center; white-space: nowrap; border-right: 1px solid #D4D1C9;"><span aria-hidden="true" style="width: 9px; height: 9px; border: 1.2px solid #141414; border-radius: 50%;"></span>SOURCES IN VIEW</li>
-<li style="padding: 14px 32px; font-family: 'IBM Plex Mono', monospace; font-size: 12px; letter-spacing: 0.06em; color: #2B2B2B; display: flex; gap: 10px; align-items: center; white-space: nowrap; border-right: 1px solid #D4D1C9;"><span aria-hidden="true" style="width: 9px; height: 9px; border: 1.2px solid #141414; border-radius: 50%;"></span>BALANCED OPTIONS</li>
-<li style="padding: 14px 32px; font-family: 'IBM Plex Mono', monospace; font-size: 12px; letter-spacing: 0.06em; color: #2B2B2B; display: flex; gap: 10px; align-items: center; white-space: nowrap; border-right: 1px solid #D4D1C9;"><span aria-hidden="true" style="width: 9px; height: 9px; background: #F04A23;"></span>NO PRESSURE, EVER</li>
-<li style="padding: 14px 32px; font-family: 'IBM Plex Mono', monospace; font-size: 12px; letter-spacing: 0.06em; color: #2B2B2B; display: flex; gap: 10px; align-items: center; white-space: nowrap; border-right: 1px solid #D4D1C9;"><span aria-hidden="true" style="width: 9px; height: 9px; border: 1.2px solid #141414; border-radius: 50%;"></span>YOUR DECISION, YOUR TERMS</li>
-<li style="padding: 14px 32px; font-family: 'IBM Plex Mono', monospace; font-size: 12px; letter-spacing: 0.06em; color: #2B2B2B; display: flex; gap: 10px; align-items: center; white-space: nowrap; border-right: 1px solid #D4D1C9;"><span aria-hidden="true" style="width: 9px; height: 9px; border: 1.2px solid #141414; border-radius: 50%;"></span>UNDERSTANDING CREATES AGENCY</li>
+<!-- ============ [00] HERO · THE PROMISE ============ -->
+<section class="hero" aria-labelledby="hero-title">
+  <div class="hero__copy">
+    <div class="hero__intro">
+      <p class="label hero__kicker" data-hero="kicker">[00] Clarity for the decisions that matter</p>
+      <h1 id="hero-title" class="display hero__title" data-hero="title">Know what it means.<br> Choose for <span class="mark" data-mark="hero">yourself.</span></h1>
+    </div>
+    <div class="hero__foot">
+      <a class="btn btn--primary hero__cta" href="#story" data-hero="cta" data-magnetic>See how it works<span class="arr" aria-hidden="true">→</span></a>
+    </div>
+  </div>
+
+  <figure class="hero__figure" role="img" aria-label="A gnarled ink-black tree on dark rocks, its branches sweeping left in front of a low setting sun whose light scatters through red-orange and orange blossom moving gently in the wind." >
+    <canvas class="hero-sky" aria-hidden="true"></canvas>
+    <canvas class="hero-tree" aria-hidden="true"></canvas>
+    <figcaption class="label formation__caption" aria-hidden="true">Fig. 00 — Room to grow</figcaption>
+  </figure>
+</section>
+
+<ul class="principles" aria-label="Principles">
+  <li><span class="dot" aria-hidden="true"></span>Plain meaning first</li>
+  <li><span class="dot" aria-hidden="true"></span>Sources in view</li>
+  <li><span class="dot" aria-hidden="true"></span>Balanced options</li>
+  <li><span class="dot dot--signal" aria-hidden="true"></span>No pressure, ever</li>
+  <li><span class="dot" aria-hidden="true"></span>Your decision, your terms</li>
 </ul>
-<ul aria-hidden="true" style="list-style: none; margin: 0; padding: 0; display: flex;">
-<li style="padding: 14px 32px; font-family: 'IBM Plex Mono', monospace; font-size: 12px; letter-spacing: 0.06em; color: #2B2B2B; display: flex; gap: 10px; align-items: center; white-space: nowrap; border-right: 1px solid #D4D1C9;"><span style="width: 9px; height: 9px; border: 1.2px solid #141414; border-radius: 50%;"></span>PLAIN MEANING FIRST</li>
-<li style="padding: 14px 32px; font-family: 'IBM Plex Mono', monospace; font-size: 12px; letter-spacing: 0.06em; color: #2B2B2B; display: flex; gap: 10px; align-items: center; white-space: nowrap; border-right: 1px solid #D4D1C9;"><span style="width: 9px; height: 9px; border: 1.2px solid #141414; border-radius: 50%;"></span>SOURCES IN VIEW</li>
-<li style="padding: 14px 32px; font-family: 'IBM Plex Mono', monospace; font-size: 12px; letter-spacing: 0.06em; color: #2B2B2B; display: flex; gap: 10px; align-items: center; white-space: nowrap; border-right: 1px solid #D4D1C9;"><span style="width: 9px; height: 9px; border: 1.2px solid #141414; border-radius: 50%;"></span>BALANCED OPTIONS</li>
-<li style="padding: 14px 32px; font-family: 'IBM Plex Mono', monospace; font-size: 12px; letter-spacing: 0.06em; color: #2B2B2B; display: flex; gap: 10px; align-items: center; white-space: nowrap; border-right: 1px solid #D4D1C9;"><span style="width: 9px; height: 9px; background: #F04A23;"></span>NO PRESSURE, EVER</li>
-<li style="padding: 14px 32px; font-family: 'IBM Plex Mono', monospace; font-size: 12px; letter-spacing: 0.06em; color: #2B2B2B; display: flex; gap: 10px; align-items: center; white-space: nowrap; border-right: 1px solid #D4D1C9;"><span style="width: 9px; height: 9px; border: 1.2px solid #141414; border-radius: 50%;"></span>YOUR DECISION, YOUR TERMS</li>
-<li style="padding: 14px 32px; font-family: 'IBM Plex Mono', monospace; font-size: 12px; letter-spacing: 0.06em; color: #2B2B2B; display: flex; gap: 10px; align-items: center; white-space: nowrap; border-right: 1px solid #D4D1C9;"><span style="width: 9px; height: 9px; border: 1.2px solid #141414; border-radius: 50%;"></span>UNDERSTANDING CREATES AGENCY</li>
-</ul>
-</div>
-</div>
+
+<!-- ============ [01] THE OPEN FRAME · OBJECT B ============ -->
+<section id="frame" class="section" aria-labelledby="frame-title">
+  <div class="section-head">
+    <div class="section-head__main">
+      <p class="label">[01] The open frame</p>
+      <h2 id="frame-title" class="h1" data-reveal="lines">Structure that <span class="mark">never closes.</span></h2>
+    </div>
+    <div class="section-head__aside"><p class="explain">The symbol is a lowercase <i>i</i> — for information and for the individual — held inside two corner brackets. The frame gives structure, but it never closes.</p></div>
+  </div>
+  <div class="frame">
+    <div class="frame__parts" role="group" aria-label="Parts of the symbol — select one to highlight it">
+      <button type="button" class="part" data-part="brackets" aria-pressed="false">
+        <span class="label">[B1] The brackets</span>
+        <span class="part__text">Structure. The same annotation marks used across the brand — [01], [S1].</span>
+      </button>
+      <button type="button" class="part" data-part="corners" aria-pressed="false">
+        <span class="label">[B2] The open corners</span>
+        <span class="part__text">The choice stays open. We frame the information, never the outcome.</span>
+      </button>
+      <button type="button" class="part" data-part="stem" aria-pressed="false">
+        <span class="label">[B3] The stem</span>
+        <span class="part__text">Information made solid — fragments settled into one clear line.</span>
+      </button>
+      <button type="button" class="part" data-part="signal" aria-pressed="false">
+        <span class="label label--signal">[B4] The signal square</span>
+        <span class="part__text">The person. Set apart from the frame — the point the structure serves.</span>
+      </button>
+    </div>
+    <figure class="stage3d stage3d--frame field" data-scene="frame" aria-labelledby="fig-01">
+      <div class="stage3d__fallback" aria-hidden="true">
+        <img src="/brand/informatie-symbol.svg" alt="" width="240" height="240">
+      </div>
+      <figcaption id="fig-01" class="stage3d__caption label">Fig. 01 — The mark as a constructed model · 12u grid · gap 0.6u</figcaption>
+    </figure>
+  </div>
 </section>
 
-<section id="problem" aria-labelledby="problem-title" style="border-bottom: 1px solid #D4D1C9;">
-<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 1px; background: #D4D1C9; border-bottom: 1px solid #D4D1C9;">
-<div class="span2" style="grid-column: span 2; background: #F2F1EC; padding: 56px 24px 40px; min-width: 0;">
-<p class="reveal" style="margin: 0 0 20px; font-family: 'IBM Plex Mono', monospace; font-size: 12px; letter-spacing: 0.06em; color: #555555;">THE PROBLEM</p>
-<h2 id="problem-title" class="h2 wipe" style="margin: 0; font-family: 'Inter Tight', Inter, sans-serif; font-size: 56px; line-height: 0.98; font-weight: 600; letter-spacing: -0.02em; text-transform: uppercase; color: #141414; max-width: 900px;">Information is everywhere. Understanding is not.</h2>
-</div>
-<div style="background: #F2F1EC; padding: 56px 24px 40px; display: flex; align-items: flex-end; min-width: 0;">
-<p class="reveal d1" style="margin: 0; font-size: 15px; line-height: 24px; color: #2B2B2B;">It has never been easier to find information — or harder to make sense of it. Most of it arrives scattered, unexplained and quietly one-sided.</p>
-</div>
-</div>
-<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 1px; background: #D4D1C9;">
-<article class="reveal" style="background: #F2F1EC; display: flex; flex-direction: column; min-height: 440px;">
-<div style="display: flex; justify-content: space-between; padding: 14px 20px; font-family: 'IBM Plex Mono', monospace; font-size: 12px; letter-spacing: 0.06em; color: #555555;"><span>SCATTERED</span><span>[01]</span></div>
-<svg class="draw" aria-hidden="true" viewBox="0 0 200 160" style="width: 100%; height: 180px;" fill="none" stroke="#141414" stroke-width="1.2" stroke-linejoin="round"><path d="M40 60l22-12 22 12-22 12z"></path><path d="M40 60v10l22 12 22-12V60"></path><path d="M62 72v10"></path><path d="M118 34l18-10 18 10-18 10z"></path><path d="M118 34v8l18 10 18-10v-8"></path><path d="M136 44v8"></path><path d="M104 104l20-11 20 11-20 11z" stroke="#F04A23"></path><path d="M104 104v9l20 11 20-11v-9" stroke="#F04A23"></path><path d="M124 115v9" stroke="#F04A23"></path><path d="M30 120l14-8 14 8-14 8z"></path><path class="keepdash" d="M86 70l20 28" opacity="0.5"></path><path class="keepdash" d="M100 40l-30 14" opacity="0.5"></path></svg>
-<div style="margin-top: auto; padding: 20px;">
-<h3 style="margin: 0; font-family: 'Inter Tight', Inter, sans-serif; font-size: 28px; line-height: 1; font-weight: 600; text-transform: uppercase; letter-spacing: -0.01em;">The facts are everywhere</h3>
-<p style="margin: 12px 0 0; font-size: 14px; line-height: 21px; color: #2B2B2B;">Terms, reviews and fine print live in a dozen places, and none of them connect.</p>
-</div>
-</article>
-<article class="reveal d1" style="background: #F2F1EC; display: flex; flex-direction: column; min-height: 440px;">
-<div style="display: flex; justify-content: space-between; padding: 14px 20px; font-family: 'IBM Plex Mono', monospace; font-size: 12px; letter-spacing: 0.06em; color: #555555;"><span>OPAQUE</span><span>[02]</span></div>
-<svg class="draw" aria-hidden="true" viewBox="0 0 200 160" style="width: 100%; height: 180px;" fill="none" stroke="#141414" stroke-width="1.2" stroke-linejoin="round"><path d="M100 28l44 25-44 25-44-25z"></path><path d="M56 53v52l44 25 44-25V53"></path><path d="M100 78v52"></path><path class="keepdash" d="M100 64l18 10-18 10-18-10z" stroke="#F04A23"></path><path class="keepdash" d="M82 74v20l18 10 18-10V74" stroke="#F04A23"></path><path d="M64 70l28 16M64 82l28 16M64 94l28 16M108 86l28-16M108 98l28-16M108 110l28-16" opacity="0.35"></path></svg>
-<div style="margin-top: auto; padding: 20px;">
-<h3 style="margin: 0; font-family: 'Inter Tight', Inter, sans-serif; font-size: 28px; line-height: 1; font-weight: 600; text-transform: uppercase; letter-spacing: -0.01em;">Answers without reasons</h3>
-<p style="margin: 12px 0 0; font-size: 14px; line-height: 21px; color: #2B2B2B;">Most tools hand you a verdict but hide the sources, assumptions and limits behind it.</p>
-</div>
-</article>
-<article class="reveal d2" style="background: #F2F1EC; display: flex; flex-direction: column; min-height: 440px;">
-<div style="display: flex; justify-content: space-between; padding: 14px 20px; font-family: 'IBM Plex Mono', monospace; font-size: 12px; letter-spacing: 0.06em; color: #555555;"><span>ONE-SIDED</span><span>[03]</span></div>
-<svg class="draw" aria-hidden="true" viewBox="0 0 200 160" style="width: 100%; height: 180px;" fill="none" stroke="#141414" stroke-width="1.2" stroke-linejoin="round"><path d="M100 96l-16 34h32z"></path><path d="M36 112l128-40"></path><path d="M40 98l18-10 18 10-18 10z" stroke="#F04A23"></path><path d="M40 98v8l18 10 18-10v-8" stroke="#F04A23"></path><path d="M134 66l12-7 12 7-12 7z"></path><path d="M134 66v5l12 7 12-7v-5"></path><path d="M30 138h140"></path></svg>
-<div style="margin-top: auto; padding: 20px;">
-<h3 style="margin: 0; font-family: 'Inter Tight', Inter, sans-serif; font-size: 28px; line-height: 1; font-weight: 600; text-transform: uppercase; letter-spacing: -0.01em;">Options framed unfairly</h3>
-<p style="margin: 12px 0 0; font-size: 14px; line-height: 21px; color: #2B2B2B;">Alternatives get hidden or compared on different terms, nudging you one way.</p>
-</div>
-</article>
-<article class="reveal d3" style="background: #F2F1EC; display: flex; flex-direction: column; min-height: 440px;">
-<div style="display: flex; justify-content: space-between; padding: 14px 20px; font-family: 'IBM Plex Mono', monospace; font-size: 12px; letter-spacing: 0.06em; color: #555555;"><span>PRESSURED</span><span>[04]</span></div>
-<svg class="draw" aria-hidden="true" viewBox="0 0 200 160" style="width: 100%; height: 180px;" fill="none" stroke="#141414" stroke-width="1.2" stroke-linejoin="round"><path d="M100 70l40 22-40 22-40-22z"></path><path d="M60 92v14l40 22 40-22V92"></path><path d="M100 114v14"></path><path d="M100 18v36M90 44l10 10 10-10" stroke="#F04A23"></path><path d="M60 30v22M54 46l6 6 6-6M140 30v22M134 46l6 6 6-6" opacity="0.6"></path><circle cx="160" cy="118" r="14"></circle><path d="M160 110v8l6 4"></path></svg>
-<div style="margin-top: auto; padding: 20px;">
-<h3 style="margin: 0; font-family: 'Inter Tight', Inter, sans-serif; font-size: 28px; line-height: 1; font-weight: 600; text-transform: uppercase; letter-spacing: -0.01em;">Urgency over understanding</h3>
-<p style="margin: 12px 0 0; font-size: 14px; line-height: 21px; color: #2B2B2B;">Countdowns and “only two left” push you to decide before you understand.</p>
-</div>
-</article>
-</div>
+<!-- ============ [02] THE PROBLEM ============ -->
+<section id="problem" class="section" aria-labelledby="problem-title">
+  <div class="section-head">
+    <div class="section-head__main">
+      <p class="label">[02] The problem</p>
+      <h2 id="problem-title" class="h1" data-reveal="lines">Information is everywhere. <span class="mark">Understanding</span> is not.</h2>
+    </div>
+    <div class="section-head__aside"><p class="explain">It has never been easier to find information — or harder to make sense of it. Most of it arrives scattered, unexplained and quietly one-sided.</p></div>
+  </div>
+  <div class="cards" data-reveal="stagger">
+    <article class="card">
+      <div class="card__meta label"><span>Scattered</span><span>[01]</span></div>
+      <svg class="card__art" data-draw aria-hidden="true" viewBox="0 0 200 160" fill="none" stroke="#141414" stroke-width="1.2" stroke-linejoin="round"><path d="M40 60l22-12 22 12-22 12z"/><path d="M40 60v10l22 12 22-12V60"/><path d="M62 72v10"/><path d="M118 34l18-10 18 10-18 10z"/><path d="M118 34v8l18 10 18-10v-8"/><path d="M136 44v8"/><path d="M104 104l20-11 20 11-20 11z" stroke="#F04A23"/><path d="M104 104v9l20 11 20-11v-9" stroke="#F04A23"/><path d="M124 115v9" stroke="#F04A23"/><path d="M30 120l14-8 14 8-14 8z"/><path class="keep" d="M86 70l20 28" stroke-dasharray="3 4" opacity="0.5"/><path class="keep" d="M100 40l-30 14" stroke-dasharray="3 4" opacity="0.5"/></svg>
+      <div class="card__body">
+        <h3 class="h3">The facts are everywhere</h3>
+        <p>Terms, reviews and fine print live in a dozen places, and none of them connect.</p>
+      </div>
+    </article>
+    <article class="card">
+      <div class="card__meta label"><span>Opaque</span><span>[02]</span></div>
+      <svg class="card__art" data-draw aria-hidden="true" viewBox="0 0 200 160" fill="none" stroke="#141414" stroke-width="1.2" stroke-linejoin="round"><path d="M100 28l44 25-44 25-44-25z"/><path d="M56 53v52l44 25 44-25V53"/><path d="M100 78v52"/><path class="keep" d="M100 64l18 10-18 10-18-10z" stroke="#F04A23" stroke-dasharray="3 4"/><path class="keep" d="M82 74v20l18 10 18-10V74" stroke="#F04A23" stroke-dasharray="3 4"/><path d="M64 70l28 16M64 82l28 16M64 94l28 16M108 86l28-16M108 98l28-16M108 110l28-16" opacity="0.35"/></svg>
+      <div class="card__body">
+        <h3 class="h3">Answers without reasons</h3>
+        <p>Most tools hand you a verdict but hide the sources, assumptions and limits behind it.</p>
+      </div>
+    </article>
+    <article class="card">
+      <div class="card__meta label"><span>One-sided</span><span>[03]</span></div>
+      <svg class="card__art" data-draw aria-hidden="true" viewBox="0 0 200 160" fill="none" stroke="#141414" stroke-width="1.2" stroke-linejoin="round"><path d="M100 96l-16 34h32z"/><path d="M36 112l128-40"/><path d="M40 98l18-10 18 10-18 10z" stroke="#F04A23"/><path d="M40 98v8l18 10 18-10v-8" stroke="#F04A23"/><path d="M134 66l12-7 12 7-12 7z"/><path d="M134 66v5l12 7 12-7v-5"/><path d="M30 138h140"/></svg>
+      <div class="card__body">
+        <h3 class="h3">Options framed unfairly</h3>
+        <p>Alternatives get hidden or compared on different terms, nudging you one way.</p>
+      </div>
+    </article>
+    <article class="card">
+      <div class="card__meta label"><span>Pressured</span><span>[04]</span></div>
+      <svg class="card__art" data-draw aria-hidden="true" viewBox="0 0 200 160" fill="none" stroke="#141414" stroke-width="1.2" stroke-linejoin="round"><path d="M100 70l40 22-40 22-40-22z"/><path d="M60 92v14l40 22 40-22V92"/><path d="M100 114v14"/><path d="M100 18v36M90 44l10 10 10-10" stroke="#F04A23"/><path d="M60 30v22M54 46l6 6 6-6M140 30v22M134 46l6 6 6-6" opacity="0.6"/><circle cx="160" cy="118" r="14"/><path d="M160 110v8l6 4"/></svg>
+      <div class="card__body">
+        <h3 class="h3">Urgency over understanding</h3>
+        <p>Countdowns and “only two left” push you to decide before you understand.</p>
+      </div>
+    </article>
+  </div>
 </section>
 
-<section id="story" class="story-track" aria-labelledby="story-title" style="border-bottom: 1px solid #D4D1C9;">
-<div class="story-pin" style="background: #F2F1EC;">
-<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1px; background: #D4D1C9; border-bottom: 1px solid #D4D1C9; flex: 0 0 auto;">
-<div style="background: #F2F1EC; padding: 16px 24px; display: flex; align-items: center;">
-<h2 id="story-title" style="margin: 0; font-family: 'IBM Plex Mono', monospace; font-size: 12px; font-weight: 400; letter-spacing: 0.06em; color: #555555;">HOW IT WORKS</h2>
-</div>
-<p class="st1" style="margin: 0; background: #F2F1EC; color: #141414; padding: 16px 24px; font-family: 'IBM Plex Mono', monospace; font-size: 12px; letter-spacing: 0.06em;">[01] INFORMATION</p>
-<p class="st2" style="margin: 0; background: #F2F1EC; color: #141414; padding: 16px 24px; font-family: 'IBM Plex Mono', monospace; font-size: 12px; letter-spacing: 0.06em;">[02] STRUCTURE</p>
-<p class="st3" style="margin: 0; background: #1C1C1C; color: #FFFFFF; padding: 16px 24px; font-family: 'IBM Plex Mono', monospace; font-size: 12px; letter-spacing: 0.06em;">[03] UNDERSTANDING</p>
-</div>
-<div style="position: relative; flex: 1 1 auto; min-height: 0;">
-<svg role="img" aria-label="Scattered fragments of information assemble into three comparable option columns, then gain markers for meaning, trade-off, source and limit" viewBox="0 0 1000 600" preserveAspectRatio="xMidYMid meet" style="display: block; width: 100%; height: 100%; min-height: 360px;">
-<rect width="1000" height="600" fill="url(#dots)"></rect>
-<g class="fr">
-<path d="M100 92H900M100 86v12M900 86v12M390 88v8M680 88v8" stroke="#141414" stroke-width="1" opacity="0.6"></path>
-<text x="500" y="76" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="11" letter-spacing="1" fill="#555555">SAME CRITERIA ACROSS EVERY OPTION</text>
-<rect x="100" y="120" width="220" height="320" fill="#FBFAF7" stroke="#141414" stroke-width="1"></rect>
-<rect x="390" y="120" width="220" height="320" fill="#FBFAF7" stroke="#141414" stroke-width="1"></rect>
-<rect x="680" y="120" width="220" height="320" fill="#FBFAF7" stroke="#141414" stroke-width="1"></rect>
-<text x="120" y="140" font-family="IBM Plex Mono, monospace" font-size="11" letter-spacing="1" fill="#555555">OPTION A</text>
-<text x="410" y="140" font-family="IBM Plex Mono, monospace" font-size="11" letter-spacing="1" fill="#555555">OPTION B</text>
-<text x="700" y="140" font-family="IBM Plex Mono, monospace" font-size="11" letter-spacing="1" fill="#555555">OPTION C</text>
-<path d="M120 268H300M410 268H590M700 268H880M120 380H300M410 380H590M700 380H880" stroke="#D4D1C9" stroke-width="1"></path>
-</g>
-<rect class="f" x="120" y="150" width="140" height="14" fill="#141414" style="--dx: 203px; --dy: 118px; --r: 22deg;"></rect>
-<rect class="f" x="120" y="190" width="180" height="6" fill="#8A8A8A" style="--dx: 260px; --dy: -23px; --r: -12deg;"></rect>
-<rect class="f" x="120" y="214" width="150" height="6" fill="#8A8A8A" style="--dx: 227px; --dy: -25px; --r: -23deg;"></rect>
-<rect class="f" x="120" y="238" width="170" height="6" fill="#8A8A8A" style="--dx: 197px; --dy: 35px; --r: -17deg;"></rect>
-<rect class="f" x="120" y="290" width="120" height="6" fill="#8A8A8A" style="--dx: -168px; --dy: -99px; --r: 15deg;"></rect>
-<rect class="f" x="120" y="400" width="96" height="10" fill="#F04A23" style="--dx: 203px; --dy: -40px; --r: -34deg;"></rect>
-<rect class="f" x="410" y="150" width="140" height="14" fill="#141414" style="--dx: -196px; --dy: -90px; --r: -31deg;"></rect>
-<rect class="f" x="410" y="190" width="180" height="6" fill="#8A8A8A" style="--dx: -66px; --dy: 3px; --r: -32deg;"></rect>
-<rect class="f" x="410" y="214" width="150" height="6" fill="#8A8A8A" style="--dx: 215px; --dy: 47px; --r: 21deg;"></rect>
-<rect class="f" x="410" y="238" width="170" height="6" fill="#8A8A8A" style="--dx: -60px; --dy: -1px; --r: 2deg;"></rect>
-<rect class="f" x="410" y="290" width="120" height="6" fill="#8A8A8A" style="--dx: 251px; --dy: -118px; --r: -25deg;"></rect>
-<rect class="f" x="410" y="400" width="96" height="10" fill="#F04A23" style="--dx: 208px; --dy: 22px; --r: 17deg;"></rect>
-<rect class="f" x="700" y="150" width="140" height="14" fill="#141414" style="--dx: -175px; --dy: 10px; --r: 5deg;"></rect>
-<rect class="f" x="700" y="190" width="180" height="6" fill="#8A8A8A" style="--dx: -25px; --dy: 27px; --r: -32deg;"></rect>
-<rect class="f" x="700" y="214" width="150" height="6" fill="#8A8A8A" style="--dx: -189px; --dy: -65px; --r: 16deg;"></rect>
-<rect class="f" x="700" y="238" width="170" height="6" fill="#8A8A8A" style="--dx: -150px; --dy: 28px; --r: 14deg;"></rect>
-<rect class="f" x="700" y="290" width="120" height="6" fill="#8A8A8A" style="--dx: -192px; --dy: -112px; --r: -35deg;"></rect>
-<rect class="f" x="700" y="400" width="96" height="10" fill="#F04A23" style="--dx: -42px; --dy: -13px; --r: -29deg;"></rect>
-<g class="ann" font-family="IBM Plex Mono, monospace" font-size="11" font-weight="500">
-<rect x="268" y="148" width="18" height="18" fill="#D4361A"></rect><text x="277" y="161" text-anchor="middle" fill="#FFFFFF">1</text>
-<rect x="596" y="198" width="18" height="18" fill="#D4361A"></rect><text x="605" y="211" text-anchor="middle" fill="#FFFFFF">2</text>
-<rect x="804" y="396" width="18" height="18" fill="#D4361A"></rect><text x="813" y="409" text-anchor="middle" fill="#FFFFFF">3</text>
-<rect x="248" y="284" width="18" height="18" fill="#D4361A"></rect><text x="257" y="297" text-anchor="middle" fill="#FFFFFF">4</text>
-<path d="M410 214H590" stroke="#F04A23" stroke-width="1.2" stroke-dasharray="4 3"></path>
-<g transform="translate(560 496)" font-size="12" letter-spacing="1" fill="#141414">
-<rect x="0" y="0" width="14" height="14" fill="#D4361A"></rect><text x="22" y="11">1 · MEANING</text>
-<rect x="170" y="0" width="14" height="14" fill="#D4361A"></rect><text x="192" y="11">2 · TRADE-OFF</text>
-<rect x="0" y="28" width="14" height="14" fill="#D4361A"></rect><text x="22" y="39">3 · SOURCE</text>
-<rect x="170" y="28" width="14" height="14" fill="#D4361A"></rect><text x="192" y="39">4 · LIMIT</text>
-</g>
-</g>
-</svg>
-<div style="position: absolute; left: 24px; bottom: 24px; width: 340px; max-width: calc(100% - 48px); background: #1C1C1C; color: #FFFFFF;">
-<div style="display: flex; justify-content: space-between; align-items: center; padding: 10px 16px; border-bottom: 1px solid #333333; font-family: 'IBM Plex Mono', monospace; font-size: 12px; letter-spacing: 0.06em; color: #A8A8A8;"><span>INTRODUCTION</span><span aria-hidden="true" style="width: 8px; height: 8px; background: #F04A23;"></span></div>
-<div style="position: relative; min-height: 96px;">
-<p class="cap cap1" style="margin: 0; padding: 14px 16px; font-size: 15px; line-height: 23px;">Facts arrive scattered — terms, reviews, fine print — with nothing connecting them.</p>
-<p class="cap cap2" style="margin: 0; padding: 14px 16px; font-size: 15px; line-height: 23px;">Informatie arranges the same facts into comparable groups, measured on the same criteria.</p>
-<p class="cap cap3" style="margin: 0; padding: 14px 16px; font-size: 15px; line-height: 23px;">Meaning, trade-offs, sources and limits are marked. The decision stays yours.</p>
-</div>
-<p class="scroll-hint" style="margin: 0; padding: 0 16px 12px; font-family: 'IBM Plex Mono', monospace; font-size: 12px; letter-spacing: 0.06em; color: #A8A8A8;">[SCROLL TO CONTINUE]</p>
-</div>
-</div>
-<div aria-hidden="true" style="height: 2px; background: #D4D1C9; flex: 0 0 auto;"><div class="story-bar" style="height: 2px; background: #F04A23;"></div></div>
-</div>
+<!-- ============ [03] HOW IT WORKS · OBJECT A (pinned) ============ -->
+<section id="story" class="story" aria-labelledby="story-title">
+  <div class="story__pin">
+    <div class="story__bar">
+      <h2 id="story-title" class="label story__title">[03] How it works</h2>
+      <p class="story__step" data-step="1" aria-current="step">[01] Information</p>
+      <p class="story__step" data-step="2">[02] Relationships</p>
+      <p class="story__step" data-step="3">[03] Understanding</p>
+    </div>
+    <figure class="story__stage stage3d stage3d--field field" data-scene="field" aria-label="Scattered fragments of information align into three comparable options on shared criteria, are linked to their sources, and leave a marked space open for your decision.">
+      <div class="stage3d__fallback" aria-hidden="true">
+        <svg viewBox="0 0 1200 520" preserveAspectRatio="xMidYMid meet">
+          <polygon points="807.8,335.0 807.8,345.0 600.0,465.0 392.2,345.0 392.2,335.0 600,455" fill="#E4E1D8" stroke="#141414" stroke-width="1.2" stroke-linejoin="round"/>
+          <polygon points="600.0,215.0 807.8,335.0 600.0,455.0 392.2,335.0" fill="#F2F1EC" stroke="#141414" stroke-width="1.2" stroke-linejoin="round"/>
+          <g stroke="#141414" stroke-width="1.2" stroke-linejoin="round">
+            <polygon points="539.4,264.0 591.3,294.0 539.4,324.0 487.4,294.0" fill="#F2F1EC"/><polygon points="539.4,248.0 591.3,278.0 539.4,308.0 487.4,278.0" fill="#F2F1EC"/><polygon points="539.4,232.0 591.3,262.0 539.4,292.0 487.4,262.0" fill="#F2F1EC"/>
+            <polygon points="600.0,299.0 652.0,329.0 600.0,359.0 548.0,329.0" fill="#F2F1EC"/><polygon points="600.0,283.0 652.0,313.0 600.0,343.0 548.0,313.0" fill="#F2F1EC"/><polygon points="600.0,267.0 652.0,297.0 600.0,327.0 548.0,297.0" fill="#F2F1EC"/><polygon points="600.0,251.0 652.0,281.0 600.0,311.0 548.0,281.0" fill="#F2F1EC"/>
+            <polygon points="660.6,334.0 712.6,364.0 660.6,394.0 608.7,364.0" fill="#F2F1EC"/><polygon points="660.6,318.0 712.6,348.0 660.6,378.0 608.7,348.0" fill="#F2F1EC"/>
+          </g>
+          <polygon points="526.4,347.5 578.4,377.5 526.4,407.5 474.4,377.5" fill="none" stroke="#C2311A" stroke-width="1.5" stroke-dasharray="5 4"/>
+          <g font-family="IBM Plex Mono, monospace" font-size="12" letter-spacing="1">
+            <path d="M539.4 232V191H420M600 251V158M686 341H860M474.4 377.5H360" fill="none" stroke="#141414"/>
+            <text x="250" y="195" fill="#141414">[OPT-A] LOWER COST</text>
+            <text x="608" y="151" fill="#141414">[OPT-B] MORE FLEXIBILITY</text>
+            <text x="868" y="345" fill="#141414">[OPT-C] LESS RISK</text>
+            <text x="150" y="381" fill="#C2311A">YOUR DECISION · LEFT OPEN</text>
+          </g>
+        </svg>
+      </div>
+      <div class="stage3d__labels" aria-hidden="true"></div>
+    </figure>
+    <div class="caption-bar story__caption">
+      <div class="caption-bar__head label"><span>From fragments to understanding</span><span class="sq" aria-hidden="true"></span></div>
+      <div class="story__caps">
+        <p class="story__cap" data-step="1">Facts arrive scattered — terms, reviews, fine print — with nothing connecting them.</p>
+        <p class="story__cap" data-step="2">Fragments become relationships: the same facts, aligned on shared criteria and linked to where they came from.</p>
+        <p class="story__cap" data-step="3">Relationships become understanding. Meaning, trade-offs and sources are marked — the decision stays open.</p>
+      </div>
+      <p class="story__hint label" aria-hidden="true">[Scroll to continue]</p>
+    </div>
+    <div class="story__progress" aria-hidden="true"><span></span></div>
+  </div>
 </section>
 
-<section id="method" aria-labelledby="method-title" style="border-bottom: 1px solid #D4D1C9;">
-<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 1px; background: #D4D1C9; border-bottom: 1px solid #D4D1C9;">
-<div class="span2" style="grid-column: span 2; background: #F2F1EC; padding: 56px 24px 40px; min-width: 0;">
-<p class="reveal" style="margin: 0 0 20px; font-family: 'IBM Plex Mono', monospace; font-size: 12px; letter-spacing: 0.06em; color: #555555;">THE METHOD</p>
-<h2 id="method-title" class="h2 wipe" style="margin: 0; font-family: 'Inter Tight', Inter, sans-serif; font-size: 56px; line-height: 0.98; font-weight: 600; letter-spacing: -0.02em; text-transform: uppercase; color: #141414;">Understand before you decide.</h2>
-</div>
-<div style="background: #F2F1EC; padding: 56px 24px 40px; display: flex; align-items: flex-end; min-width: 0;">
-<p class="reveal d1" style="margin: 0; font-size: 15px; line-height: 24px; color: #2B2B2B;">Four stages. Move between them freely — there is no fixed order and no progress bar counting you down.</p>
-</div>
-</div>
-<div role="group" aria-label="Method stages" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1px; background: #D4D1C9; border-bottom: 1px solid #D4D1C9;">
-<button type="button" class="cellbtn stage reveal" data-stage="understand" aria-pressed="true">
-<span style="display: flex; justify-content: space-between; align-items: center;"><span class="num">[01]</span><span class="dot" aria-hidden="true"></span></span>
-<span style="display: block; margin-top: 56px; font-family: 'Inter Tight', Inter, sans-serif; font-size: 32px; line-height: 1; font-weight: 600; letter-spacing: -0.01em;">UNDERSTAND</span>
-<span class="line">MEANING FIRST</span>
-</button>
-<button type="button" class="cellbtn stage reveal" data-stage="explore" aria-pressed="false">
-<span style="display: flex; justify-content: space-between; align-items: center;"><span class="num">[02]</span><span class="dot" aria-hidden="true"></span></span>
-<span style="display: block; margin-top: 56px; font-family: 'Inter Tight', Inter, sans-serif; font-size: 32px; line-height: 1; font-weight: 600; letter-spacing: -0.01em;">EXPLORE</span>
-<span class="line">THE FULL RANGE</span>
-</button>
-<button type="button" class="cellbtn stage reveal" data-stage="compare" aria-pressed="false">
-<span style="display: flex; justify-content: space-between; align-items: center;"><span class="num">[03]</span><span class="dot" aria-hidden="true"></span></span>
-<span style="display: block; margin-top: 56px; font-family: 'Inter Tight', Inter, sans-serif; font-size: 32px; line-height: 1; font-weight: 600; letter-spacing: -0.01em;">COMPARE</span>
-<span class="line">SAME TERMS</span>
-</button>
-<button type="button" class="cellbtn stage reveal" data-stage="decide" aria-pressed="false">
-<span style="display: flex; justify-content: space-between; align-items: center;"><span class="num">[04]</span><span class="dot" aria-hidden="true"></span></span>
-<span style="display: block; margin-top: 56px; font-family: 'Inter Tight', Inter, sans-serif; font-size: 32px; line-height: 1; font-weight: 600; letter-spacing: -0.01em;">DECIDE</span>
-<span class="line">NOW OR LATER</span>
-</button>
-</div>
-<div style="padding: 24px;">
-<div style="display: flex; flex-wrap: wrap; align-items: center; gap: 16px 40px; background: #1C1C1C; color: #FFFFFF; padding: 20px 28px;">
-<span style="font-family: 'Inter Tight', Inter, sans-serif; font-size: 34px; line-height: 1; font-weight: 600; text-transform: uppercase; letter-spacing: -0.01em;" data-m="word">UNDERSTAND</span>
-<span style="flex: 1 1 280px; font-size: 17px; line-height: 26px;" data-m="title">Start with what it means.</span>
-<span aria-hidden="true" style="width: 10px; height: 10px; background: #F04A23;"></span>
-</div>
-<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 24px; padding-top: 24px;">
-<p style="margin: 0; font-size: 16px; line-height: 26px; color: #2B2B2B; max-width: 560px;" data-m="body">We lead with the plain-language meaning, then show the detail behind it. You always know the point before the fine print.</p>
-<div style="border: 1px dashed #141414; padding: 20px;">
-<p style="margin: 0 0 8px; font-family: 'IBM Plex Mono', monospace; font-size: 12px; letter-spacing: 0.06em; color: #555555;">EXAMPLE</p>
-<p style="margin: 0; font-size: 16px; line-height: 26px;" data-m="example">“This plan’s fees rise after the first year” appears before the full fee table.</p>
-</div>
-</div>
-</div>
+<!-- ============ [04] THE METHOD + OBJECT C ============ -->
+<section id="method" class="section" aria-labelledby="method-title">
+  <div class="section-head">
+    <div class="section-head__main">
+      <p class="label">[04] The method</p>
+      <h2 id="method-title" class="h1" data-reveal="lines"><span class="mark">Understand</span> before you decide.</h2>
+    </div>
+    <div class="section-head__aside"><p class="explain">Four stages. Move between them freely — there is no fixed order and no progress bar counting you down.</p></div>
+  </div>
+  <div class="stages" role="group" aria-label="Method stages">
+    <button type="button" class="stage" data-stage="understand" aria-pressed="true">
+      <span class="stage__top"><span class="label">[01]</span><span class="stage__dot" aria-hidden="true"></span></span>
+      <span class="stage__word">Understand</span>
+      <span class="label stage__line">Meaning first</span>
+    </button>
+    <button type="button" class="stage" data-stage="explore" aria-pressed="false">
+      <span class="stage__top"><span class="label">[02]</span><span class="stage__dot" aria-hidden="true"></span></span>
+      <span class="stage__word">Explore</span>
+      <span class="label stage__line">The full range</span>
+    </button>
+    <button type="button" class="stage" data-stage="compare" aria-pressed="false">
+      <span class="stage__top"><span class="label">[03]</span><span class="stage__dot" aria-hidden="true"></span></span>
+      <span class="stage__word">Compare</span>
+      <span class="label stage__line">Same terms</span>
+    </button>
+    <button type="button" class="stage" data-stage="decide" aria-pressed="false">
+      <span class="stage__top"><span class="label">[04]</span><span class="stage__dot" aria-hidden="true"></span></span>
+      <span class="stage__word">Decide</span>
+      <span class="label stage__line">Now or later</span>
+    </button>
+  </div>
+  <div class="method-detail">
+    <div class="caption-bar caption-bar--inline">
+      <span class="caption-bar__word" data-m="word">Understand</span>
+      <span class="caption-bar__line" data-m="title">Start with what it means.</span>
+      <span class="sq" aria-hidden="true"></span>
+    </div>
+    <div class="method-detail__grid">
+      <p class="body" data-m="body">We lead with the plain-language meaning, then show the detail behind it. You always know the point before the fine print.</p>
+      <div class="example">
+        <p class="label">Example</p>
+        <p class="body" data-m="example">“This plan’s fees rise after the first year” appears before the full fee table.</p>
+      </div>
+    </div>
+  </div>
+
+  <div id="explorer" class="explorer">
+    <div class="explorer__side">
+      <p class="label">[04.1] Structure explorer</p>
+      <h3 class="h2" data-reveal="lines">How the pieces <span class="mark">relate.</span></h3>
+      <p class="explain explorer__intro">Each layer rests on the one below. Select a layer to see what it does and what it connects to. The drawing illustrates the list — everything it shows is written here too.</p>
+      <div class="explorer__list" role="group" aria-label="Layers of the structure">
+        <button type="button" class="layer-btn" data-layer="agency" aria-pressed="false"><span class="label label--signal">[04] Agency</span><span>What you decide</span></button>
+        <button type="button" class="layer-btn" data-layer="option" aria-pressed="false"><span class="label">[OPT-B] Option</span><span>What you could do</span></button>
+        <button type="button" class="layer-btn" data-layer="understand" aria-pressed="false"><span class="label">[01] Understand</span><span>What it means</span></button>
+        <button type="button" class="layer-btn" data-layer="source" aria-pressed="false"><span class="label">[S1] Source</span><span>Where it comes from</span></button>
+      </div>
+      <div class="explorer__detail" aria-live="polite">
+        <p class="label" data-x="label">Overview</p>
+        <p class="explorer__title" data-x="title">Four layers, one direction.</p>
+        <p class="body" data-x="body">Sources support meaning, meaning structures the options, and the options serve one thing: your decision.</p>
+        <p class="label explorer__rel" data-x="rel">[S1] → [01] → [OPT-B] → [04]</p>
+      </div>
+    </div>
+    <figure class="stage3d stage3d--explorer field" data-scene="explorer" aria-labelledby="fig-04">
+      <div class="stage3d__fallback" aria-hidden="true">
+        <svg viewBox="0 0 600 560" preserveAspectRatio="xMidYMid meet"><g><polygon points="152.8,278.9 329.4,380.9 329.4,385 152.8,283" fill="#E4E1D8"/><polygon points="447.2,312.9 329.4,380.9 329.4,385 447.2,317" fill="#D4D1C9"/><polygon class="top" points="270.6,210.9 447.2,312.9 329.4,380.9 152.8,278.9" fill="#F2F1EC"/></g><path d="M152.8 278.9h-40" stroke="#141414" stroke-width="1"/><text x="106.80000000000001" y="282.9" text-anchor="end" font-family="IBM Plex Mono, monospace" font-size="12" letter-spacing="1" fill="#141414">[S1] SOURCE</text><g><polygon points="152.8,204.1 329.4,306.1 329.4,310.2 152.8,208.2" fill="#E4E1D8"/><polygon points="447.2,238.1 329.4,306.1 329.4,310.2 447.2,242.2" fill="#D4D1C9"/><polygon class="top" points="270.6,136.1 447.2,238.1 329.4,306.1 152.8,204.1" fill="#F2F1EC"/></g><path d="M152.8 204.1h-40" stroke="#141414" stroke-width="1"/><text x="106.80000000000001" y="208.1" text-anchor="end" font-family="IBM Plex Mono, monospace" font-size="12" letter-spacing="1" fill="#141414">[01] UNDERSTAND</text><g><polygon points="152.8,129.3 329.4,231.3 329.4,235.4 152.8,133.4" fill="#E4E1D8"/><polygon points="447.2,163.3 329.4,231.3 329.4,235.4 447.2,167.4" fill="#D4D1C9"/><polygon class="top" points="270.6,61.3 447.2,163.3 329.4,231.3 152.8,129.3" fill="#F2F1EC"/></g><path d="M152.8 129.3h-40" stroke="#141414" stroke-width="1"/><text x="106.80000000000001" y="133.3" text-anchor="end" font-family="IBM Plex Mono, monospace" font-size="12" letter-spacing="1" fill="#141414">[OPT-B] OPTION</text><g><polygon points="152.8,54.5 329.4,156.5 329.4,160.6 152.8,58.6" fill="#E4E1D8"/><polygon points="447.2,88.5 329.4,156.5 329.4,160.6 447.2,92.6" fill="#D4D1C9"/><polygon class="top" points="270.6,-13.5 447.2,88.5 329.4,156.5 152.8,54.5" fill="#F2F1EC"/></g><path d="M152.8 54.5h-40" stroke="#141414" stroke-width="1"/><text x="106.80000000000001" y="58.5" text-anchor="end" font-family="IBM Plex Mono, monospace" font-size="12" letter-spacing="1" fill="#141414">[04] AGENCY</text><rect x="293" y="34.6" width="14" height="14" fill="#F04A23"/><path d="M270.6 210.9L270.6 -9.4" stroke="#555555" stroke-width="1" stroke-dasharray="3 4"/><path d="M447.2 312.9L447.2 92.6" stroke="#555555" stroke-width="1" stroke-dasharray="3 4"/><path d="M329.4 380.9L329.4 160.6" stroke="#555555" stroke-width="1" stroke-dasharray="3 4"/><path d="M152.8 278.9L152.8 58.6" stroke="#555555" stroke-width="1" stroke-dasharray="3 4"/></svg>
+      </div>
+      <div class="stage3d__labels" aria-hidden="true"></div>
+      <figcaption id="fig-04" class="stage3d__caption label"><span>Fig. 04 — Layered structure</span><span class="stage3d__hint">Drag to rotate · select a layer</span></figcaption>
+      <button type="button" class="stage3d__reset label" hidden>Reset view</button>
+    </figure>
+  </div>
 </section>
 
-<section aria-labelledby="trust-title" style="border-bottom: 1px solid #D4D1C9;">
-<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(340px, 1fr)); gap: 1px; background: #D4D1C9;">
-<div style="background: #F2F1EC; padding: 56px 24px; display: flex; flex-direction: column; gap: 24px; min-width: 0;">
-<p class="reveal" style="margin: 0; font-family: 'IBM Plex Mono', monospace; font-size: 12px; letter-spacing: 0.06em; color: #555555;">TRUST</p>
-<h2 id="trust-title" class="h2 wipe" style="margin: 0; font-family: 'Inter Tight', Inter, sans-serif; font-size: 56px; line-height: 0.98; font-weight: 600; letter-spacing: -0.02em; text-transform: uppercase;">Don't just tell me. Show me why.</h2>
-<p class="reveal d1" style="margin: 0; font-size: 15px; line-height: 24px; color: #2B2B2B; max-width: 460px;">Every suggestion carries its reasoning, its sources and its limits. Open as much detail as you want — the summary always stays in view.</p>
-<svg class="draw" aria-hidden="true" viewBox="0 0 320 170" style="width: 100%; max-width: 380px; margin-top: auto;" fill="none" stroke="#141414" stroke-width="1.2" stroke-linejoin="round"><path d="M40 20h120l24 24v116H40z"></path><path d="M160 20v24h24"></path><path d="M58 60h90M58 76h104M58 92h70M58 108h96M58 124h60" opacity="0.45"></path><circle cx="212" cy="98" r="40" fill="#F2F1EC"></circle><circle cx="212" cy="98" r="28"></circle><path d="M241 127l34 34"></path><path d="M198 92h28M198 104h18" stroke="#F04A23" stroke-width="2"></path></svg>
-</div>
-<article class="reveal d1" aria-label="Sample recommendation" style="background: #F2F1EC; padding: 56px 24px; min-width: 0;">
-<div style="border: 1px solid #141414; background: #FBFAF7;">
-<div style="display: flex; justify-content: space-between; align-items: center; gap: 12px; padding: 12px 20px; border-bottom: 1px solid #141414; font-family: 'IBM Plex Mono', monospace; font-size: 12px; letter-spacing: 0.06em; color: #555555;"><span>REC-B · SAMPLE RECOMMENDATION</span><span style="padding: 2px 8px; background: #E4E1D8; color: #141414;">ILLUSTRATIVE</span></div>
-<div style="padding: 24px 20px;">
-<h3 style="margin: 0; font-family: 'Inter Tight', Inter, sans-serif; font-size: 30px; line-height: 1; font-weight: 600; text-transform: uppercase; letter-spacing: -0.01em;">Option B — the flexible plan</h3>
-<p style="margin: 12px 0 0; font-size: 16px; line-height: 26px; color: #2B2B2B;">A good fit if you may need to change your terms within a year.</p>
-</div>
-<div style="border-top: 1px solid #D4D1C9;">
-<button type="button" class="cellbtn acc" aria-expanded="true" aria-controls="p-why" data-acc="1" style="width: 100%; min-height: 56px; display: flex; justify-content: space-between; align-items: center; padding: 0 20px; background: transparent; border: none; cursor: pointer; font-family: 'Inter Tight', Inter, sans-serif; font-size: 18px; font-weight: 600; text-transform: uppercase; color: #141414; text-align: left;">Why this option?<span aria-hidden="true" style="font-family: 'IBM Plex Mono', monospace; font-size: 20px; font-weight: 400;" class="sign">−</span></button>
-<div id="p-why">
-<p style="margin: 0; padding: 0 20px 20px; font-size: 15px; line-height: 24px; color: #2B2B2B;">It scores highest on flexibility, which you marked as most important. If cost matters more, Option A is likely the better fit.</p>
-</div>
-</div>
-<div style="border-top: 1px solid #D4D1C9;">
-<button type="button" class="cellbtn acc" aria-expanded="false" aria-controls="p-ev" data-acc="1" style="width: 100%; min-height: 56px; display: flex; justify-content: space-between; align-items: center; padding: 0 20px; background: transparent; border: none; cursor: pointer; font-family: 'Inter Tight', Inter, sans-serif; font-size: 18px; font-weight: 600; text-transform: uppercase; color: #141414; text-align: left;">Evidence<span aria-hidden="true" style="font-family: 'IBM Plex Mono', monospace; font-size: 20px; font-weight: 400;" class="sign">+</span></button>
-<div id="p-ev" hidden>
-<div style="padding: 0 20px 20px; display: flex; flex-direction: column; gap: 6px; font-family: 'IBM Plex Mono', monospace; font-size: 12px; line-height: 20px; letter-spacing: 0.04em;">
-<span>[S1] PROVIDER TERMS DOCUMENT · [DATE]</span>
-<span>[S2] INDEPENDENT REVIEW · [DATE]</span>
-<span style="color: #555555;">ASSUMES YOU STAY AT LEAST SIX MONTHS</span>
-</div>
-</div>
-</div>
-<div style="border-top: 1px solid #D4D1C9;">
-<button type="button" class="cellbtn acc" aria-expanded="false" aria-controls="p-con" data-acc="1" style="width: 100%; min-height: 56px; display: flex; justify-content: space-between; align-items: center; padding: 0 20px; background: transparent; border: none; cursor: pointer; font-family: 'Inter Tight', Inter, sans-serif; font-size: 18px; font-weight: 600; text-transform: uppercase; color: #141414; text-align: left;">What to consider<span aria-hidden="true" style="font-family: 'IBM Plex Mono', monospace; font-size: 20px; font-weight: 400;" class="sign">+</span></button>
-<div id="p-con" hidden>
-<div style="padding: 0 20px 20px; display: flex; gap: 10px; align-items: flex-start;">
-<span style="flex: 0 0 auto; margin-top: 3px; padding: 0 6px; background: #1C1C1C; color: #FFFFFF; font-family: 'IBM Plex Mono', monospace; font-size: 11px; line-height: 18px;">NOTE</span>
-<p style="margin: 0; font-size: 15px; line-height: 24px; color: #2B2B2B;">The monthly cost is higher than Option A, and evidence on long-term reliability is limited.</p>
-</div>
-</div>
-</div>
-</div>
-</article>
-</div>
+<!-- ============ [05] YOUR CONTROL · COMPARE ============ -->
+<section id="agency" class="section" aria-labelledby="agency-title">
+  <div class="section-head">
+    <div class="section-head__main">
+      <p class="label">[05] Your control</p>
+      <h2 id="agency-title" class="h1" data-reveal="lines">Your decision. <span class="mark">Your terms.</span></h2>
+    </div>
+    <div class="section-head__aside"><p class="explain">Tell us what matters most and watch the comparison respond. Change it, clear it or skip it — anytime.</p></div>
+  </div>
+  <div class="prefs" role="group" aria-labelledby="pref-label">
+    <p id="pref-label" class="label prefs__label">What matters most?</p>
+    <button type="button" class="pref" data-pref="cost" aria-pressed="false">Lower cost</button>
+    <button type="button" class="pref" data-pref="risk" aria-pressed="false">Less risk</button>
+    <button type="button" class="pref" data-pref="flex" aria-pressed="false">More flexibility</button>
+    <button type="button" class="pref pref--clear" id="pref-skip">Show all equally</button>
+  </div>
+  <p role="status" id="pref-note" class="label prefs__note">No priority set — all options shown equally.</p>
+  <div class="options">
+    <article class="opt" data-opt="A">
+      <div class="opt__head label"><span>[OPT-A] Illustrative</span><span class="opt__flag"></span></div>
+      <div class="opt__body">
+        <h3 class="h2">Option A</h3>
+        <p class="opt__sum">The steady, lower-cost choice.</p>
+        <dl class="crit">
+          <div data-crit="cost"><dt>Cost</dt><dd>Lower</dd></div>
+          <div data-crit="risk"><dt>Risk</dt><dd>Medium</dd></div>
+          <div data-crit="flex"><dt>Flexibility</dt><dd>Lower</dd></div>
+        </dl>
+      </div>
+    </article>
+    <article class="opt" data-opt="B">
+      <div class="opt__head label"><span>[OPT-B] Illustrative</span><span class="opt__flag"></span></div>
+      <div class="opt__body">
+        <h3 class="h2">Option B</h3>
+        <p class="opt__sum">Costs more, adapts most easily.</p>
+        <dl class="crit">
+          <div data-crit="cost"><dt>Cost</dt><dd>Higher</dd></div>
+          <div data-crit="risk"><dt>Risk</dt><dd>Medium</dd></div>
+          <div data-crit="flex"><dt>Flexibility</dt><dd>Higher</dd></div>
+        </dl>
+      </div>
+    </article>
+    <article class="opt" data-opt="C">
+      <div class="opt__head label"><span>[OPT-C] Illustrative</span><span class="opt__flag"></span></div>
+      <div class="opt__body">
+        <h3 class="h2">Option C</h3>
+        <p class="opt__sum">The most predictable outcome.</p>
+        <dl class="crit">
+          <div data-crit="cost"><dt>Cost</dt><dd>Medium</dd></div>
+          <div data-crit="risk"><dt>Risk</dt><dd>Lower</dd></div>
+          <div data-crit="flex"><dt>Flexibility</dt><dd>Medium</dd></div>
+        </dl>
+      </div>
+    </article>
+  </div>
+  <div class="section-foot">
+    <p class="label">Every option stays visible. Nothing is pre-selected.</p>
+    <a class="btn btn--ghost" href="#evidence">Show the evidence<span class="arr" aria-hidden="true">→</span></a>
+  </div>
 </section>
 
-<section id="agency" aria-labelledby="agency-title" style="border-bottom: 1px solid #D4D1C9;">
-<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 1px; background: #D4D1C9; border-bottom: 1px solid #D4D1C9;">
-<div class="span2" style="grid-column: span 2; background: #F2F1EC; padding: 56px 24px 40px; min-width: 0;">
-<p class="reveal" style="margin: 0 0 20px; font-family: 'IBM Plex Mono', monospace; font-size: 12px; letter-spacing: 0.06em; color: #555555;">YOUR CONTROL</p>
-<h2 id="agency-title" class="h2 wipe" style="margin: 0; font-family: 'Inter Tight', Inter, sans-serif; font-size: 56px; line-height: 0.98; font-weight: 600; letter-spacing: -0.02em; text-transform: uppercase;">Your decision. Your terms.</h2>
-</div>
-<div style="background: #F2F1EC; padding: 56px 24px 40px; display: flex; align-items: flex-end; min-width: 0;">
-<p class="reveal d1" style="margin: 0; font-size: 15px; line-height: 24px; color: #2B2B2B;">Tell us what matters most and watch the comparison respond. Change it, clear it or skip it — anytime.</p>
-</div>
-</div>
-<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1px; background: #D4D1C9; border-bottom: 1px solid #D4D1C9;">
-<p id="pref-label" style="margin: 0; background: #F2F1EC; padding: 18px 24px; font-family: 'IBM Plex Mono', monospace; font-size: 12px; letter-spacing: 0.06em; color: #555555;">WHAT MATTERS MOST?</p>
-<button type="button" class="cellbtn pref" data-pref="cost" aria-pressed="false">LOWER COST</button>
-<button type="button" class="cellbtn pref" data-pref="risk" aria-pressed="false">LESS RISK</button>
-<button type="button" class="cellbtn pref" data-pref="flex" aria-pressed="false">MORE FLEXIBILITY</button>
-<button type="button" class="cellbtn" id="pref-skip" style="min-height: 56px; padding: 0 24px; background: #F2F1EC; border: none; cursor: pointer; text-align: left; font-family: 'IBM Plex Mono', monospace; font-size: 12px; letter-spacing: 0.06em; color: #C2311A; text-decoration: underline;">SKIP</button>
-</div>
-<p role="status" style="margin: 0; padding: 14px 24px; border-bottom: 1px solid #D4D1C9; font-family: 'IBM Plex Mono', monospace; font-size: 12px; letter-spacing: 0.04em; color: #555555;" id="pref-note">NO PRIORITY SET — ALL OPTIONS SHOWN EQUALLY.</p>
-<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1px; background: #D4D1C9;">
-<div class="opt reveal" data-opt="A" style="background: #F2F1EC; display: flex; flex-direction: column;">
-<div class="opt-head"><span>[OPT-A] ILLUSTRATIVE</span><span class="opt-flag"></span></div>
-<div style="padding: 28px 24px 24px;">
-<h3 style="margin: 0; font-family: 'Inter Tight', Inter, sans-serif; font-size: 36px; line-height: 1; font-weight: 600; text-transform: uppercase; letter-spacing: -0.01em;">Option A</h3>
-<p style="margin: 10px 0 24px; font-size: 14px; line-height: 21px; color: #2B2B2B;">The steady, lower-cost choice.</p>
-<div style="display: flex; justify-content: space-between; padding: 10px 0; border-top: 1px solid #D4D1C9; font-family: 'IBM Plex Mono', monospace; font-size: 12px; letter-spacing: 0.06em;"><span style="color: #555555;">COST</span><span style="color: #141414; font-weight: 500;">LOWER</span></div><div style="display: flex; justify-content: space-between; padding: 10px 0; border-top: 1px solid #D4D1C9; font-family: 'IBM Plex Mono', monospace; font-size: 12px; letter-spacing: 0.06em;"><span style="color: #555555;">RISK</span><span style="color: #141414; font-weight: 500;">MEDIUM</span></div><div style="display: flex; justify-content: space-between; padding: 10px 0; border-top: 1px solid #D4D1C9; font-family: 'IBM Plex Mono', monospace; font-size: 12px; letter-spacing: 0.06em;"><span style="color: #555555;">FLEXIBILITY</span><span style="color: #141414; font-weight: 500;">LOWER</span></div>
-</div>
-</div>
-<div class="opt reveal" data-opt="B" style="background: #F2F1EC; display: flex; flex-direction: column;">
-<div class="opt-head"><span>[OPT-B] ILLUSTRATIVE</span><span class="opt-flag"></span></div>
-<div style="padding: 28px 24px 24px;">
-<h3 style="margin: 0; font-family: 'Inter Tight', Inter, sans-serif; font-size: 36px; line-height: 1; font-weight: 600; text-transform: uppercase; letter-spacing: -0.01em;">Option B</h3>
-<p style="margin: 10px 0 24px; font-size: 14px; line-height: 21px; color: #2B2B2B;">Costs more, adapts most easily.</p>
-<div style="display: flex; justify-content: space-between; padding: 10px 0; border-top: 1px solid #D4D1C9; font-family: 'IBM Plex Mono', monospace; font-size: 12px; letter-spacing: 0.06em;"><span style="color: #555555;">COST</span><span style="color: #141414; font-weight: 500;">HIGHER</span></div><div style="display: flex; justify-content: space-between; padding: 10px 0; border-top: 1px solid #D4D1C9; font-family: 'IBM Plex Mono', monospace; font-size: 12px; letter-spacing: 0.06em;"><span style="color: #555555;">RISK</span><span style="color: #141414; font-weight: 500;">MEDIUM</span></div><div style="display: flex; justify-content: space-between; padding: 10px 0; border-top: 1px solid #D4D1C9; font-family: 'IBM Plex Mono', monospace; font-size: 12px; letter-spacing: 0.06em;"><span style="color: #555555;">FLEXIBILITY</span><span style="color: #141414; font-weight: 500;">HIGHER</span></div>
-</div>
-</div>
-<div class="opt reveal" data-opt="C" style="background: #F2F1EC; display: flex; flex-direction: column;">
-<div class="opt-head"><span>[OPT-C] ILLUSTRATIVE</span><span class="opt-flag"></span></div>
-<div style="padding: 28px 24px 24px;">
-<h3 style="margin: 0; font-family: 'Inter Tight', Inter, sans-serif; font-size: 36px; line-height: 1; font-weight: 600; text-transform: uppercase; letter-spacing: -0.01em;">Option C</h3>
-<p style="margin: 10px 0 24px; font-size: 14px; line-height: 21px; color: #2B2B2B;">The most predictable outcome.</p>
-<div style="display: flex; justify-content: space-between; padding: 10px 0; border-top: 1px solid #D4D1C9; font-family: 'IBM Plex Mono', monospace; font-size: 12px; letter-spacing: 0.06em;"><span style="color: #555555;">COST</span><span style="color: #141414; font-weight: 500;">MEDIUM</span></div><div style="display: flex; justify-content: space-between; padding: 10px 0; border-top: 1px solid #D4D1C9; font-family: 'IBM Plex Mono', monospace; font-size: 12px; letter-spacing: 0.06em;"><span style="color: #555555;">RISK</span><span style="color: #141414; font-weight: 500;">LOWER</span></div><div style="display: flex; justify-content: space-between; padding: 10px 0; border-top: 1px solid #D4D1C9; font-family: 'IBM Plex Mono', monospace; font-size: 12px; letter-spacing: 0.06em;"><span style="color: #555555;">FLEXIBILITY</span><span style="color: #141414; font-weight: 500;">MEDIUM</span></div>
-</div>
-</div>
-</div>
+<!-- ============ [06] TRUST · EVIDENCE ============ -->
+<section id="evidence" class="section" aria-labelledby="trust-title">
+  <div class="trust">
+    <div class="trust__copy">
+      <p class="label">[06] Trust</p>
+      <h2 id="trust-title" class="h1" data-reveal="lines">Don't just tell me. <span class="mark">Show me why.</span></h2>
+      <p class="explain">Every suggestion carries its reasoning, its sources and its limits. Open as much detail as you want — the summary always stays in view.</p>
+      <button type="button" class="btn btn--ghost" id="show-evidence">Show the evidence<span class="arr" aria-hidden="true">→</span></button>
+      <svg class="trust__art" data-draw aria-hidden="true" viewBox="0 0 320 170" fill="none" stroke="#141414" stroke-width="1.2" stroke-linejoin="round"><path d="M40 20h120l24 24v116H40z"/><path d="M160 20v24h24"/><path d="M58 60h90M58 76h104M58 92h70M58 108h96M58 124h60" opacity="0.45"/><circle cx="212" cy="98" r="40" fill="#F2F1EC"/><circle cx="212" cy="98" r="28"/><path d="M241 127l34 34"/><path d="M198 92h28M198 104h18" stroke="#F04A23" stroke-width="2"/></svg>
+    </div>
+    <div class="trust__rec"><article class="rec" aria-label="Sample recommendation">
+      <div class="rec__head label"><span>REC-B · Sample recommendation</span><span class="tag">Illustrative</span></div>
+      <div class="rec__summary">
+        <h3 class="h2">Option B — the flexible plan</h3>
+        <p class="body">A good fit if you may need to change your terms within a year.</p>
+      </div>
+      <div class="acc-item">
+        <button type="button" class="acc" aria-expanded="true" aria-controls="p-why">Why this option?<span class="sign" aria-hidden="true">−</span></button>
+        <div id="p-why" class="acc-panel"><div class="acc-panel__inner">
+          <p class="body">It scores highest on flexibility, which you marked as most important. If cost matters more, Option A is likely the better fit.</p>
+        </div></div>
+      </div>
+      <div class="acc-item">
+        <button type="button" class="acc" aria-expanded="false" aria-controls="p-ev">Evidence<span class="sign" aria-hidden="true">+</span></button>
+        <div id="p-ev" class="acc-panel"><div class="acc-panel__inner">
+          <ul class="sources">
+            <li><span>[S1]</span> Provider terms document · [DATE]</li>
+            <li><span>[S2]</span> Independent review · [DATE]</li>
+            <li class="sources__assume"><span>[A1]</span> Assumes you stay at least six months</li>
+          </ul>
+        </div></div>
+      </div>
+      <div class="acc-item">
+        <button type="button" class="acc" aria-expanded="false" aria-controls="p-con">What to consider<span class="sign" aria-hidden="true">+</span></button>
+        <div id="p-con" class="acc-panel"><div class="acc-panel__inner">
+          <p class="note"><span class="tag tag--ink">Note</span> The monthly cost is higher than Option A, and evidence on long-term reliability is limited.</p>
+        </div></div>
+      </div>
+    </article></div>
+  </div>
+  <div class="ledger">
+    <svg class="ledger__rule" data-draw aria-hidden="true" viewBox="0 0 1200 24" preserveAspectRatio="none"><path d="M0 12H1200M0 4V20M400 6V18M800 6V18M1200 4V20" stroke="#141414" stroke-width="1" fill="none"/></svg>
+    <div class="ledger__col">
+      <p class="label">Sources</p>
+      <ul><li><span class="label">[S1]</span> Provider terms document · [DATE]</li><li><span class="label">[S2]</span> Independent review · [DATE]</li></ul>
+    </div>
+    <div class="ledger__col">
+      <p class="label">Assumptions</p>
+      <ul><li><span class="label">[A1]</span> You stay at least six months.</li><li><span class="label">[A2]</span> Prices as published on [DATE].</li></ul>
+    </div>
+    <div class="ledger__col">
+      <p class="label">Limits</p>
+      <ul><li><span class="label">[L1]</span> Evidence on long-term reliability is limited.</li><li><span class="label">[L2]</span> Illustrative example — not advice.</li></ul>
+    </div>
+  </div>
 </section>
 
-<section aria-labelledby="aud-title" style="border-bottom: 1px solid #D4D1C9;">
-<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(340px, 1fr)); gap: 1px; background: #D4D1C9;">
-<div style="background: #F2F1EC; min-width: 0; overflow: hidden;">
-<svg aria-hidden="true" viewBox="0 0 600 560" preserveAspectRatio="xMidYMid slice" style="display: block; width: 100%; height: 100%; min-height: 420px;">
-<rect class="block" x="150" y="150" width="330" height="300" fill="#F04A23"></rect>
-<rect class="block" x="40" y="270" width="180" height="180" fill="#F04A23" opacity="0.92"></rect>
-<circle class="sun" cx="470" cy="150" r="96" fill="#F04A23"></circle>
-<path d="M150 150V450M480 150v80M320 150v300M150 300h330" stroke="#141414" stroke-width="0.8" opacity="0.35"></path>
-<g fill="#141414" opacity="0.35"><circle cx="210" cy="190" r="2"></circle><circle cx="260" cy="240" r="1.5"></circle><circle cx="390" cy="210" r="2.5"></circle><circle cx="420" cy="330" r="1.5"></circle><circle cx="300" cy="380" r="2"></circle><circle cx="90" cy="320" r="1.5"></circle><circle cx="500" cy="120" r="2"></circle><circle cx="450" cy="180" r="1.5"></circle></g>
-<polygon points="0,450 600,450 600,560 0,560" fill="#E4E1D8"></polygon>
-<path d="M0 450H600M120 474H520M160 498H560M200 522H600" stroke="#141414" stroke-width="1.2"></path>
-<path d="M120 450v24M160 474v24M200 498v24" stroke="#141414" stroke-width="1.2"></path>
-<polygon points="0,410 130,410 130,560 0,560" fill="#1C1C1C"></polygon>
-<path d="M470 450V330M470 390l-30-40M470 370l34-46M470 345l-14-40M470 345l22-34M440 350l-20-12M504 324l18-10" stroke="#141414" stroke-width="2" fill="none"></path>
-<g fill="#141414"><circle cx="420" cy="336" r="10"></circle><circle cx="440" cy="300" r="14"></circle><circle cx="470" cy="310" r="16"></circle><circle cx="500" cy="290" r="12"></circle><circle cx="522" cy="312" r="10"></circle><circle cx="456" cy="296" r="9"></circle></g>
-<g fill="#141414"><circle cx="330" cy="404" r="5"></circle><rect x="326" y="410" width="8" height="22"></rect><rect x="326" y="430" width="3" height="18"></rect><rect x="331" y="430" width="3" height="18"></rect></g>
-<path d="M20 548c40-60 70-70 100-80M60 548c20-40 50-60 90-66M100 548c10-30 30-44 60-50" stroke="#141414" stroke-width="1.5" fill="none"></path>
-<text x="20" y="36" font-family="IBM Plex Mono, monospace" font-size="12" letter-spacing="1" fill="#555555">[FIG. 02] — ROOM TO DECIDE</text>
-</svg>
-</div>
-<div style="background: #F2F1EC; min-width: 0;">
-<div style="padding: 56px 24px 32px;">
-<p class="reveal" style="margin: 0 0 20px; font-family: 'IBM Plex Mono', monospace; font-size: 12px; letter-spacing: 0.06em; color: #555555;">MADE FOR</p>
-<h2 id="aud-title" class="h2 wipe" style="margin: 0; font-family: 'Inter Tight', Inter, sans-serif; font-size: 56px; line-height: 0.98; font-weight: 600; letter-spacing: -0.02em; text-transform: uppercase;">Made for every state of mind.</h2>
-</div>
-<div class="aud-item" style="border-top: 1px dashed #D4D1C9;">
-<button type="button" class="cellbtn acc" data-group="aud" aria-expanded="true" aria-controls="aud-overwhelmed" style="width: 100%; min-height: 72px; display: flex; justify-content: space-between; align-items: center; padding: 0 24px; background: transparent; border: none; cursor: pointer; font-family: 'Inter Tight', Inter, sans-serif; font-size: 28px; font-weight: 600; text-transform: uppercase; letter-spacing: -0.01em; color: #141414; text-align: left;">Overwhelmed<span class="sign" aria-hidden="true" style="font-family: 'IBM Plex Mono', monospace; font-size: 22px; font-weight: 400; color: #555555;">−</span></button>
-<div id="aud-overwhelmed" style="grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px; padding: 0 24px 24px;" class="aud-panel">
-<div><p style="margin: 0 0 4px; font-family: 'IBM Plex Mono', monospace; font-size: 12px; letter-spacing: 0.06em; color: #555555;">THEY NEED</p><p style="margin: 0; font-size: 15px; line-height: 24px;">A calm starting point.</p></div>
-<div><p style="margin: 0 0 4px; font-family: 'IBM Plex Mono', monospace; font-size: 12px; letter-spacing: 0.06em; color: #C2311A;">WE RESPOND WITH</p><p style="margin: 0; font-size: 15px; line-height: 24px;">One message and one action per section.</p></div>
-</div>
-</div>
-<div class="aud-item" style="border-top: 1px dashed #D4D1C9;">
-<button type="button" class="cellbtn acc" data-group="aud" aria-expanded="false" aria-controls="aud-uncertain" style="width: 100%; min-height: 72px; display: flex; justify-content: space-between; align-items: center; padding: 0 24px; background: transparent; border: none; cursor: pointer; font-family: 'Inter Tight', Inter, sans-serif; font-size: 28px; font-weight: 600; text-transform: uppercase; letter-spacing: -0.01em; color: #141414; text-align: left;">Uncertain<span class="sign" aria-hidden="true" style="font-family: 'IBM Plex Mono', monospace; font-size: 22px; font-weight: 400; color: #555555;">+</span></button>
-<div id="aud-uncertain" hidden style="grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px; padding: 0 24px 24px;" class="aud-panel">
-<div><p style="margin: 0 0 4px; font-family: 'IBM Plex Mono', monospace; font-size: 12px; letter-spacing: 0.06em; color: #555555;">THEY NEED</p><p style="margin: 0; font-size: 15px; line-height: 24px;">Evidence and trade-offs.</p></div>
-<div><p style="margin: 0 0 4px; font-family: 'IBM Plex Mono', monospace; font-size: 12px; letter-spacing: 0.06em; color: #C2311A;">WE RESPOND WITH</p><p style="margin: 0; font-size: 15px; line-height: 24px;">Balanced comparisons and openly stated uncertainty.</p></div>
-</div>
-</div>
-<div class="aud-item" style="border-top: 1px dashed #D4D1C9;">
-<button type="button" class="cellbtn acc" data-group="aud" aria-expanded="false" aria-controls="aud-timepoor" style="width: 100%; min-height: 72px; display: flex; justify-content: space-between; align-items: center; padding: 0 24px; background: transparent; border: none; cursor: pointer; font-family: 'Inter Tight', Inter, sans-serif; font-size: 28px; font-weight: 600; text-transform: uppercase; letter-spacing: -0.01em; color: #141414; text-align: left;">Time-poor<span class="sign" aria-hidden="true" style="font-family: 'IBM Plex Mono', monospace; font-size: 22px; font-weight: 400; color: #555555;">+</span></button>
-<div id="aud-timepoor" hidden style="grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px; padding: 0 24px 24px;" class="aud-panel">
-<div><p style="margin: 0 0 4px; font-family: 'IBM Plex Mono', monospace; font-size: 12px; letter-spacing: 0.06em; color: #555555;">THEY NEED</p><p style="margin: 0; font-size: 15px; line-height: 24px;">Fast orientation.</p></div>
-<div><p style="margin: 0 0 4px; font-family: 'IBM Plex Mono', monospace; font-size: 12px; letter-spacing: 0.06em; color: #C2311A;">WE RESPOND WITH</p><p style="margin: 0; font-size: 15px; line-height: 24px;">We lead with what the information means.</p></div>
-</div>
-</div>
-<div class="aud-item" style="border-top: 1px dashed #D4D1C9;">
-<button type="button" class="cellbtn acc" data-group="aud" aria-expanded="false" aria-controls="aud-sceptical" style="width: 100%; min-height: 72px; display: flex; justify-content: space-between; align-items: center; padding: 0 24px; background: transparent; border: none; cursor: pointer; font-family: 'Inter Tight', Inter, sans-serif; font-size: 28px; font-weight: 600; text-transform: uppercase; letter-spacing: -0.01em; color: #141414; text-align: left;">Sceptical<span class="sign" aria-hidden="true" style="font-family: 'IBM Plex Mono', monospace; font-size: 22px; font-weight: 400; color: #555555;">+</span></button>
-<div id="aud-sceptical" hidden style="grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px; padding: 0 24px 24px;" class="aud-panel">
-<div><p style="margin: 0 0 4px; font-family: 'IBM Plex Mono', monospace; font-size: 12px; letter-spacing: 0.06em; color: #555555;">THEY NEED</p><p style="margin: 0; font-size: 15px; line-height: 24px;">Proof and control.</p></div>
-<div><p style="margin: 0 0 4px; font-family: 'IBM Plex Mono', monospace; font-size: 12px; letter-spacing: 0.06em; color: #C2311A;">WE RESPOND WITH</p><p style="margin: 0; font-size: 15px; line-height: 24px;">Sources, dates, method and limits always in view.</p></div>
-</div>
-</div>
-<div class="aud-item" style="border-top: 1px dashed #D4D1C9;">
-<button type="button" class="cellbtn acc" data-group="aud" aria-expanded="false" aria-controls="aud-expert" style="width: 100%; min-height: 72px; display: flex; justify-content: space-between; align-items: center; padding: 0 24px; background: transparent; border: none; cursor: pointer; font-family: 'Inter Tight', Inter, sans-serif; font-size: 28px; font-weight: 600; text-transform: uppercase; letter-spacing: -0.01em; color: #141414; text-align: left;">Expert<span class="sign" aria-hidden="true" style="font-family: 'IBM Plex Mono', monospace; font-size: 22px; font-weight: 400; color: #555555;">+</span></button>
-<div id="aud-expert" hidden style="grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px; padding: 0 24px 24px;" class="aud-panel">
-<div><p style="margin: 0 0 4px; font-family: 'IBM Plex Mono', monospace; font-size: 12px; letter-spacing: 0.06em; color: #555555;">THEY NEED</p><p style="margin: 0; font-size: 15px; line-height: 24px;">Depth and rigour.</p></div>
-<div><p style="margin: 0 0 4px; font-family: 'IBM Plex Mono', monospace; font-size: 12px; letter-spacing: 0.06em; color: #C2311A;">WE RESPOND WITH</p><p style="margin: 0; font-size: 15px; line-height: 24px;">Methodology and supporting detail on demand.</p></div>
-</div>
-</div>
-</div>
-</div>
+<!-- ============ MADE FOR ============ -->
+<section class="section" aria-labelledby="aud-title">
+  <div class="audience">
+    <div class="audience__art field">
+      <svg viewBox="0 0 600 520" aria-hidden="true" preserveAspectRatio="xMidYMid meet"><g><polygon points="40.2,270 403.9,480 403.9,489 40.2,279" fill="#E4E1D8"/><polygon points="559.8,390 403.9,480 403.9,489 559.8,399" fill="#D4D1C9"/><polygon class="top" points="196.1,180 559.8,390 403.9,480 40.2,270" fill="#F2F1EC"/></g><g class="aud-col" data-aud="overwhelmed"><polygon points="128.5,213 170.1,237 170.1,273 128.5,249" fill="#E4E1D8"/><polygon points="211.7,213 170.1,237 170.1,273 211.7,249" fill="#D4D1C9"/><polygon class="top" points="170.1,189 211.7,213 170.1,237 128.5,213" fill="#F2F1EC"/></g><g class="aud-marker" data-aud="overwhelmed"><rect x="164.1" y="180" width="12" height="12" fill="#F04A23"/></g><text x="102.5" y="306" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="11" letter-spacing="1" fill="#555555">01</text><g class="aud-col" data-aud="uncertain"><polygon points="196.1,216 237.6,240 237.6,312 196.1,288" fill="#E4E1D8"/><polygon points="279.2,216 237.6,240 237.6,312 279.2,288" fill="#D4D1C9"/><polygon class="top" points="237.6,192 279.2,216 237.6,240 196.1,216" fill="#F2F1EC"/></g><g class="aud-marker" data-aud="uncertain"><rect x="231.6" y="183" width="12" height="12" fill="#F04A23"/></g><text x="170.1" y="345" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="11" letter-spacing="1" fill="#555555">02</text><g class="aud-col" data-aud="timepoor"><polygon points="263.6,273 305.2,297 305.2,351 263.6,327" fill="#E4E1D8"/><polygon points="346.8,273 305.2,297 305.2,351 346.8,327" fill="#D4D1C9"/><polygon class="top" points="305.2,249 346.8,273 305.2,297 263.6,273" fill="#F2F1EC"/></g><g class="aud-marker" data-aud="timepoor"><rect x="299.2" y="240" width="12" height="12" fill="#F04A23"/></g><text x="237.6" y="384" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="11" letter-spacing="1" fill="#555555">03</text><g class="aud-col" data-aud="sceptical"><polygon points="331.2,270 372.7,294 372.7,390 331.2,366" fill="#E4E1D8"/><polygon points="414.3,270 372.7,294 372.7,390 414.3,366" fill="#D4D1C9"/><polygon class="top" points="372.7,246 414.3,270 372.7,294 331.2,270" fill="#F2F1EC"/></g><g class="aud-marker" data-aud="sceptical"><rect x="366.7" y="237" width="12" height="12" fill="#F04A23"/></g><text x="305.2" y="423" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="11" letter-spacing="1" fill="#555555">04</text><g class="aud-col" data-aud="expert"><polygon points="398.7,279 440.3,303 440.3,429 398.7,405" fill="#E4E1D8"/><polygon points="481.9,279 440.3,303 440.3,429 481.9,405" fill="#D4D1C9"/><polygon class="top" points="440.3,255 481.9,279 440.3,303 398.7,279" fill="#F2F1EC"/></g><g class="aud-marker" data-aud="expert"><rect x="434.3" y="246" width="12" height="12" fill="#F04A23"/></g><text x="372.7" y="462" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="11" letter-spacing="1" fill="#555555">05</text><text x="20" y="36" font-family="IBM Plex Mono, monospace" font-size="12" letter-spacing="1" fill="#555555">[FIG. 06] — ONE STRUCTURE, MANY STARTING POINTS</text></svg>
+    </div>
+    <div class="audience__list">
+      <div class="audience__head">
+        <p class="label">Made for</p>
+        <h2 id="aud-title" class="h1" data-reveal="lines">Made for <span class="mark">every</span> state of mind.</h2>
+      </div>
+      <div class="aud-item">
+        <button type="button" class="acc acc--lg" data-group="aud" aria-expanded="true" aria-controls="aud-overwhelmed"><span><span class="label">01</span> Overwhelmed</span><span class="sign" aria-hidden="true">−</span></button>
+        <div id="aud-overwhelmed" class="acc-panel"><div class="acc-panel__inner aud-panel">
+          <div><p class="label">They need</p><p class="body">A calm starting point.</p></div>
+          <div><p class="label label--signal">We respond with</p><p class="body">One message and one action per section.</p></div>
+        </div></div>
+      </div>
+      <div class="aud-item">
+        <button type="button" class="acc acc--lg" data-group="aud" aria-expanded="false" aria-controls="aud-uncertain"><span><span class="label">02</span> Uncertain</span><span class="sign" aria-hidden="true">+</span></button>
+        <div id="aud-uncertain" class="acc-panel"><div class="acc-panel__inner aud-panel">
+          <div><p class="label">They need</p><p class="body">Evidence and trade-offs.</p></div>
+          <div><p class="label label--signal">We respond with</p><p class="body">Balanced comparisons and openly stated uncertainty.</p></div>
+        </div></div>
+      </div>
+      <div class="aud-item">
+        <button type="button" class="acc acc--lg" data-group="aud" aria-expanded="false" aria-controls="aud-timepoor"><span><span class="label">03</span> Time-poor</span><span class="sign" aria-hidden="true">+</span></button>
+        <div id="aud-timepoor" class="acc-panel"><div class="acc-panel__inner aud-panel">
+          <div><p class="label">They need</p><p class="body">Fast orientation.</p></div>
+          <div><p class="label label--signal">We respond with</p><p class="body">We lead with what the information means.</p></div>
+        </div></div>
+      </div>
+      <div class="aud-item">
+        <button type="button" class="acc acc--lg" data-group="aud" aria-expanded="false" aria-controls="aud-sceptical"><span><span class="label">04</span> Sceptical</span><span class="sign" aria-hidden="true">+</span></button>
+        <div id="aud-sceptical" class="acc-panel"><div class="acc-panel__inner aud-panel">
+          <div><p class="label">They need</p><p class="body">Proof and control.</p></div>
+          <div><p class="label label--signal">We respond with</p><p class="body">Sources, dates, method and limits always in view.</p></div>
+        </div></div>
+      </div>
+      <div class="aud-item">
+        <button type="button" class="acc acc--lg" data-group="aud" aria-expanded="false" aria-controls="aud-expert"><span><span class="label">05</span> Expert</span><span class="sign" aria-hidden="true">+</span></button>
+        <div id="aud-expert" class="acc-panel"><div class="acc-panel__inner aud-panel">
+          <div><p class="label">They need</p><p class="body">Depth and rigour.</p></div>
+          <div><p class="label label--signal">We respond with</p><p class="body">Methodology and supporting detail on demand.</p></div>
+        </div></div>
+      </div>
+    </div>
+  </div>
 </section>
 
-<section id="closing" aria-labelledby="closing-title" style="border-bottom: 1px solid #D4D1C9; position: relative;">
-<span aria-hidden="true" style="position: absolute; left: 12px; top: 10px; font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: #555555;">[0,0]</span>
-<span aria-hidden="true" style="position: absolute; right: 12px; top: 10px; font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: #555555;">[1440,0]</span>
-<span aria-hidden="true" style="position: absolute; left: 12px; bottom: 10px; font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: #555555;">[0,720]</span>
-<span aria-hidden="true" style="position: absolute; right: 12px; bottom: 10px; font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: #555555;">[1440,720]</span>
-<div style="padding: 104px 24px 0; display: flex; flex-direction: column; align-items: center; text-align: center; gap: 20px;">
-<h2 id="closing-title" class="h2 wipe" style="margin: 0; font-family: 'Inter Tight', Inter, sans-serif; font-size: 64px; line-height: 0.98; font-weight: 600; letter-spacing: -0.02em; text-transform: uppercase; max-width: 820px;">Understanding creates agency.</h2>
-<p class="reveal d1" style="margin: 0; font-size: 15px; line-height: 24px; color: #2B2B2B; max-width: 460px;">We reduce complexity without reducing the person. The choice is always yours.</p>
-<a class="cta reveal d2" href="#top" style="display: inline-flex; align-items: center; gap: 16px; min-height: 48px; padding: 0 20px; background: #D4361A; color: #FFFFFF; text-decoration: none; font-family: 'IBM Plex Mono', monospace; font-size: 13px; letter-spacing: 0.06em; font-weight: 500;">EXPLORE INFORMATIE<span class="arr" aria-hidden="true" style="font-size: 18px;">→</span></a>
-</div>
-<svg aria-hidden="true" viewBox="0 0 600 260" style="display: block; width: 100%; max-width: 640px; margin: 24px auto 0;" fill="none" stroke="#141414" stroke-width="1.2" stroke-linejoin="round">
-<circle class="sun" cx="392" cy="70" r="44" fill="#F04A23" stroke="none"></circle>
-<path d="M300 150L40 260M300 150L170 260M300 150L430 260M300 150L560 260" stroke="#D4D1C9"></path>
-<path d="M60 236H540" stroke="#D4D1C9"></path>
-<path d="M226 60h148v176H226z" fill="#F2F1EC"></path>
-<path d="M226 60l16-12h148l-16 12M374 60l16-12v176l-16 12"></path>
-<rect x="226" y="120" width="40" height="30" fill="#F04A23" stroke="none"></rect>
-<path d="M254 236V112a46 46 0 0 1 92 0v124" fill="#FBFAF7"></path>
-<path d="M226 84h148M226 92h148" opacity="0.4"></path>
-<path d="M200 236h200M190 246h220M180 256h240"></path>
-<circle cx="300" cy="206" r="4" fill="#141414"></circle><path d="M300 210v18M294 218h12M300 228l-5 8M300 228l5 8"></path>
-</svg>
+<!-- ============ [07] CLOSING · INVITATION ============ -->
+<section id="closing" class="closing field" aria-labelledby="closing-title">
+  <span class="coord coord--tl" aria-hidden="true">[0,0]</span>
+  <span class="coord coord--tr" aria-hidden="true">[1440,0]</span>
+  <span class="coord coord--bl" aria-hidden="true">[0,720]</span>
+  <span class="coord coord--br" aria-hidden="true">[1440,720]</span>
+  <p class="label">[07] Your move</p>
+  <h2 id="closing-title" class="display closing__title" data-reveal="lines">Understanding creates <span class="mark">agency.</span></h2>
+  <p class="explain closing__body">We reduce complexity without reducing the person. The choice is always yours — decide now, or come back later.</p>
+  <div class="closing__actions">
+    <a class="btn btn--primary" href="#agency" data-magnetic>Explore options<span class="arr" aria-hidden="true">→</span></a>
+    <a class="btn btn--ghost" href="#evidence">Show the evidence<span class="arr" aria-hidden="true">→</span></a>
+  </div>
 </section>
 
 </main>
 
-<footer aria-label="Site footer">
-<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1px; background: #D4D1C9; border-bottom: 1px solid #D4D1C9;">
-<div style="background: #F2F1EC; padding: 24px; min-height: 160px;">
-<p style="margin: 0; font-family: 'Inter Tight', Inter, sans-serif; font-size: 28px; line-height: 1; font-weight: 600; text-transform: uppercase; letter-spacing: -0.01em;">Know what it means. Choose for yourself.</p>
-</div>
-<nav aria-label="Company" style="background: #F2F1EC; padding: 24px; display: flex; flex-direction: column; gap: 8px; font-size: 15px;">
-<p style="margin: 0 0 8px; font-family: 'IBM Plex Mono', monospace; font-size: 12px; letter-spacing: 0.06em; color: #555555;">COMPANY</p>
-<a href="#top" style="color: #C2311A; text-decoration: none;">Home</a>
-<a href="#closing" style="color: #141414; text-decoration: none;">About</a>
-<a href="#closing" style="color: #141414; text-decoration: none;">Principles</a>
-<a href="#top" style="color: #141414; text-decoration: none;">Contact</a>
-</nav>
-<nav aria-label="Product" style="background: #F2F1EC; padding: 24px; display: flex; flex-direction: column; gap: 8px; font-size: 15px;">
-<p style="margin: 0 0 8px; font-family: 'IBM Plex Mono', monospace; font-size: 12px; letter-spacing: 0.06em; color: #555555;">PRODUCT</p>
-<a href="#story" style="color: #141414; text-decoration: none;">How it works</a>
-<a href="#method" style="color: #141414; text-decoration: none;">The method</a>
-<a href="#agency" style="color: #141414; text-decoration: none;">Explore options</a>
-</nav>
-<nav aria-label="Trust" style="background: #F2F1EC; padding: 24px; display: flex; flex-direction: column; gap: 8px; font-size: 15px;">
-<p style="margin: 0 0 8px; font-family: 'IBM Plex Mono', monospace; font-size: 12px; letter-spacing: 0.06em; color: #555555;">TRUST</p>
-<a href="#top" style="color: #141414; text-decoration: none;">Accessibility</a>
-<a href="#top" style="color: #141414; text-decoration: none;">Privacy</a>
-<a href="#top" style="color: #141414; text-decoration: none;">How we use sources</a>
-</nav>
-<div style="background: #F2F1EC; padding: 24px; display: flex; align-items: center; justify-content: center;">
-<svg aria-hidden="true" width="120" height="120" viewBox="0 0 30 30" fill="none" stroke="#141414" stroke-width="0.9" stroke-linejoin="round"><path d="M15 2L27 9v12l-12 7L3 21V9z"></path><path d="M3 9l12 7 12-7"></path><path d="M15 16v12"></path><path d="M9 13.5v8" stroke="#F04A23" stroke-width="1.6"></path><circle cx="9" cy="10" r="1" fill="#F04A23" stroke="none"></circle></svg>
-</div>
-</div>
-<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 1px; background: #D4D1C9; border-bottom: 1px solid #D4D1C9;">
-<div style="background: #F2F1EC; padding: 24px;">
-<label for="sub-email" style="display: block; margin-bottom: 8px; font-family: 'IBM Plex Mono', monospace; font-size: 12px; letter-spacing: 0.06em; color: #555555;">SUBSCRIBE</label>
-<p style="margin: 0 0 12px; font-size: 14px; line-height: 21px; color: #2B2B2B;">Occasional notes on clearer decisions. No spam; leave anytime.</p>
-<div style="display: flex; border-bottom: 1px solid #141414;">
-<input id="sub-email" type="email" placeholder="Enter your email" style="flex: 1; min-width: 0; min-height: 44px; border: none; background: transparent; font-family: inherit; font-size: 15px; color: #141414;">
-<button type="button" aria-label="Subscribe" style="min-width: 44px; min-height: 44px; border: none; background: transparent; cursor: pointer; font-size: 18px; color: #141414;">→</button>
-</div>
-</div>
-<div style="background: #F2F1EC; padding: 24px;">
-<p style="margin: 0 0 8px; font-family: 'IBM Plex Mono', monospace; font-size: 12px; letter-spacing: 0.06em; color: #555555;">GENERAL ENQUIRIES</p>
-<p style="margin: 0; font-size: 15px;">[hello@yourdomain]</p>
-</div>
-<div style="background: #F2F1EC; padding: 24px; display: flex; flex-direction: column; gap: 8px;">
-<label for="lang" style="font-family: 'IBM Plex Mono', monospace; font-size: 12px; letter-spacing: 0.06em; color: #555555;">LANGUAGE</label>
-<select id="lang" style="min-height: 44px; max-width: 220px; padding: 0 12px; border: 1px solid #141414; border-radius: 0; background: #F2F1EC; color: #141414; font-family: inherit; font-size: 15px;">
-<option>English</option>
-<option>Nederlands</option>
-<option>हिन्दी</option>
-</select>
-</div>
-</div>
-<div style="position: relative; padding: 24px 24px 8px; border-bottom: 1px solid #D4D1C9;">
-<span aria-hidden="true" style="position: absolute; left: 8px; top: 4px; font-family: 'IBM Plex Mono', monospace; font-size: 14px; color: #555555;">+</span>
-<span aria-hidden="true" style="position: absolute; right: 8px; top: 4px; font-family: 'IBM Plex Mono', monospace; font-size: 14px; color: #555555;">+</span>
-<svg class="wordmark" role="img" aria-label="Informatie" viewBox="0 0 1200 190" style="display: block; width: 100%; height: auto;">
-<path d="M0 30H1200M0 160H1200" stroke="#D4D1C9" stroke-width="1" stroke-dasharray="2 6"></path>
-<text x="600" y="160" text-anchor="middle" textLength="1180" lengthAdjust="spacingAndGlyphs" font-family="Inter Tight, Inter, sans-serif" font-size="176" font-weight="500" fill="none" stroke="#141414" stroke-width="1.2">INFORMATIE</text>
-</svg>
-</div>
-<div style="display: flex; flex-wrap: wrap; justify-content: space-between; gap: 12px; padding: 14px 24px; font-family: 'IBM Plex Mono', monospace; font-size: 11px; letter-spacing: 0.06em; color: #555555;">
-<span>© 2026 INFORMATIE. ALL RIGHTS RESERVED.</span>
-<span>NO TRACKING WITHOUT CONSENT · SOURCES SHOWN WITH EVERY CLAIM</span>
-</div>
+<footer class="footer" aria-label="Site footer">
+  <div class="footer__grid">
+    <div class="footer__cell">
+      <p class="h3">Know what it means. Choose for yourself.</p>
+    </div>
+    <nav class="footer__cell footer__nav" aria-label="Company">
+      <p class="label">Company</p>
+      <a href="#top" aria-current="page">Home</a>
+      <a href="#closing">About</a>
+      <a href="#frame">Principles</a>
+      <a href="#top">Contact</a>
+    </nav>
+    <nav class="footer__cell footer__nav" aria-label="Product">
+      <p class="label">Product</p>
+      <a href="#story">How it works</a>
+      <a href="#method">The method</a>
+      <a href="#agency">Explore options</a>
+    </nav>
+    <nav class="footer__cell footer__nav" aria-label="Trust">
+      <p class="label">Trust</p>
+      <a href="#top">Accessibility</a>
+      <a href="#top">Privacy</a>
+      <a href="#evidence">How we use sources</a>
+    </nav>
+    <div class="footer__cell footer__symbol">
+      <img src="/brand/informatie-symbol.svg" alt="" width="96" height="96">
+    </div>
+  </div>
+  <div class="footer__grid footer__grid--3">
+    <div class="footer__cell">
+      <label for="sub-email" class="label">Subscribe</label>
+      <p class="footer__small">Occasional notes on clearer decisions. No spam; leave anytime.</p>
+      <div class="subscribe">
+        <input id="sub-email" type="email" autocomplete="email" placeholder="Enter your email">
+        <button type="button" aria-label="Subscribe">→</button>
+      </div>
+    </div>
+    <div class="footer__cell">
+      <p class="label">General enquiries</p>
+      <p>[hello@yourdomain]</p>
+    </div>
+    <div class="footer__cell">
+      <label for="lang" class="label">Language</label>
+      <select id="lang">
+        <option>English</option>
+        <option>Nederlands</option>
+        <option lang="hi">हिन्दी</option>
+      </select>
+    </div>
+  </div>
+  <div class="footer__wordmark" data-ink>
+    <span class="cross cross--l" aria-hidden="true">+</span>
+    <span class="cross cross--r" aria-hidden="true">+</span>
+    <span class="cross cross--l cross--b" aria-hidden="true">+</span>
+    <span class="cross cross--r cross--b" aria-hidden="true">+</span>
+    <svg class="wordmark" viewBox="0 0 367 70" role="img" aria-label="informatie" data-reveal="wipe">
+      <defs>
+        <path id="wm-glyphs" vector-effect="non-scaling-stroke" d="M97 0V-1118H360V0Z M776.04 -654V0H513.04V-1118H771.04V-927H784.04Q822.04 -1021 903.54 -1076.5Q985.04 -1132 1111.04 -1132Q1227.04 -1132 1313.04 -1083.0Q1399.04 -1034 1446.54 -939.5Q1494.04 -845 1494.04 -711V0H1231.04V-670Q1231.04 -782 1173.04 -845.5Q1115.04 -909 1013.04 -909Q944.04 -909 890.54 -879.0Q837.04 -849 806.54 -792.5Q776.04 -736 776.04 -654Z M2215.08 -1118V-914H1556.08V-1118ZM1720.08 0V-1223Q1720.08 -1336 1767.08 -1411.0Q1814.08 -1486 1893.58 -1523.0Q1973.08 -1560 2069.08 -1560Q2138.08 -1560 2191.58 -1549.0Q2245.08 -1538 2270.08 -1529L2216.08 -1325Q2200.08 -1331 2175.08 -1336.5Q2150.08 -1342 2118.08 -1342Q2045.08 -1342 2013.58 -1306.0Q1982.08 -1270 1982.08 -1204V0Z M2792.12 22Q2628.12 22 2508.12 -50.0Q2388.12 -122 2322.62 -252.0Q2257.12 -382 2257.12 -554Q2257.12 -727 2322.62 -857.5Q2388.12 -988 2508.12 -1060.0Q2628.12 -1132 2792.12 -1132Q2956.12 -1132 3076.12 -1060.0Q3196.12 -988 3262.12 -857.5Q3328.12 -727 3328.12 -554Q3328.12 -382 3262.12 -252.0Q3196.12 -122 3076.12 -50.0Q2956.12 22 2792.12 22ZM2792.12 -190Q2883.12 -190 2942.12 -238.5Q3001.12 -287 3030.62 -370.0Q3060.12 -453 3060.12 -554Q3060.12 -657 3030.62 -740.0Q3001.12 -823 2942.12 -871.5Q2883.12 -920 2792.12 -920Q2703.12 -920 2643.12 -871.5Q2583.12 -823 2553.62 -740.0Q2524.12 -657 2524.12 -554Q2524.12 -453 2553.62 -370.0Q2583.12 -287 2643.12 -238.5Q2703.12 -190 2792.12 -190Z M3432.16 0V-1118H3687.16V-930H3699.16Q3729.16 -1028 3804.16 -1080.5Q3879.16 -1133 3975.16 -1133Q3996.16 -1133 4023.66 -1131.0Q4051.16 -1129 4069.16 -1126V-884Q4052.16 -890 4016.16 -894.0Q3980.16 -898 3947.16 -898Q3874.16 -898 3817.16 -867.0Q3760.16 -836 3727.66 -782.0Q3695.16 -728 3695.16 -656V0Z M4127.2 0V-1118H4378.2V-927H4392.2Q4427.2 -1023 4508.2 -1077.5Q4589.2 -1132 4700.2 -1132Q4814.2 -1132 4892.2 -1077.0Q4970.2 -1022 5001.2 -927H5013.2Q5051.2 -1020 5139.2 -1076.0Q5227.2 -1132 5349.2 -1132Q5503.2 -1132 5600.7 -1034.5Q5698.2 -937 5698.2 -750V0H5434.2V-710Q5434.2 -813 5378.7 -861.5Q5323.2 -910 5243.2 -910Q5148.2 -910 5095.2 -850.5Q5042.2 -791 5042.2 -698V0H4782.2V-720Q4782.2 -807 4731.2 -858.5Q4680.2 -910 4596.2 -910Q4539.2 -910 4492.2 -881.0Q4445.2 -852 4417.7 -800.0Q4390.2 -748 4390.2 -680V0Z M6173.24 23Q6066.24 23 5981.24 -15.5Q5896.24 -54 5847.24 -129.0Q5798.24 -204 5798.24 -314Q5798.24 -408 5833.24 -470.0Q5868.24 -532 5928.74 -569.0Q5989.24 -606 6065.24 -625.5Q6141.24 -645 6222.24 -653Q6321.24 -664 6382.24 -672.0Q6443.24 -680 6470.74 -698.0Q6498.24 -716 6498.24 -754V-759Q6498.24 -840 6450.24 -885.0Q6402.24 -930 6310.24 -930Q6213.24 -930 6156.74 -888.0Q6100.24 -846 6080.24 -789L5835.24 -824Q5864.24 -926 5931.24 -994.5Q5998.24 -1063 6094.74 -1097.5Q6191.24 -1132 6308.24 -1132Q6388.24 -1132 6468.24 -1113.5Q6548.24 -1095 6615.24 -1051.0Q6682.24 -1007 6722.24 -933.0Q6762.24 -859 6762.24 -748V0H6509.24V-154H6501.24Q6477.24 -108 6433.74 -67.5Q6390.24 -27 6325.74 -2.0Q6261.24 23 6173.24 23ZM6240.24 -171Q6320.24 -171 6378.24 -202.5Q6436.24 -234 6468.24 -286.5Q6500.24 -339 6500.24 -401V-532Q6487.24 -522 6458.24 -513.5Q6429.24 -505 6392.24 -498.0Q6355.24 -491 6319.74 -486.0Q6284.24 -481 6258.24 -478Q6199.24 -470 6152.74 -451.5Q6106.24 -433 6079.24 -401.0Q6052.24 -369 6052.24 -318Q6052.24 -245 6105.24 -208.0Q6158.24 -171 6240.24 -171Z M7473.28 -1118V-914H6832.28V-1118ZM6989.28 -1384H7252.28V-336Q7252.28 -270 7281.28 -238.5Q7310.28 -207 7373.28 -207Q7390.28 -207 7411.28 -210.0Q7432.28 -213 7449.28 -217L7494.28 -11Q7452.28 2 7409.28 8.5Q7366.28 15 7323.28 15Q7167.28 15 7078.28 -67.5Q6989.28 -150 6989.28 -293Z M7577.32 0V-1118H7840.32V0Z M8488.36 22Q8320.36 22 8198.36 -48.5Q8076.36 -119 8010.86 -248.0Q7945.36 -377 7945.36 -552Q7945.36 -725 8010.36 -855.5Q8075.36 -986 8193.36 -1059.0Q8311.36 -1132 8471.36 -1132Q8574.36 -1132 8666.86 -1099.0Q8759.36 -1066 8830.86 -997.0Q8902.36 -928 8943.36 -821.5Q8984.36 -715 8984.36 -568V-486H8068.36V-663H8853.36L8730.36 -611Q8730.36 -706 8701.36 -776.5Q8672.36 -847 8615.36 -887.0Q8558.36 -927 8473.36 -927Q8388.36 -927 8328.36 -887.0Q8268.36 -847 8237.36 -779.5Q8206.36 -712 8206.36 -629V-506Q8206.36 -404 8241.86 -331.5Q8277.36 -259 8341.86 -221.0Q8406.36 -183 8492.36 -183Q8548.36 -183 8594.86 -199.0Q8641.36 -215 8674.86 -247.5Q8708.36 -280 8726.36 -328L8972.36 -299Q8948.36 -202 8883.86 -129.5Q8819.36 -57 8718.86 -17.5Q8618.36 22 8488.36 22Z"/>
+      </defs>
+      <g transform="translate(4 64) scale(0.03974358974358974)">
+        <path class="wm-outline" d="M97 70L97 -1188M27 -1118L430 -1118M360 -1188L360 70M430 0L27 0M776 -724L776 70M846 0L443 0M513 70L513 -1188M443 -1118L841 -1118M771 -1188L771 -857M771 -927L784 -927M784 -927Q822 -1021 903.5 -1076.5M903.5 -1076.5Q985 -1132 1111 -1132M1111 -1132Q1227 -1132 1313 -1083M1313 -1083Q1399 -1034 1446.5 -939.5M1446.5 -939.5Q1494 -845 1494 -711M1494 -781L1494 70M1564 0L1161 0M1231 70L1231 -740M1231 -670Q1231 -782 1173 -845.5M1173 -845.5Q1115 -909 1013 -909M1013 -909Q944 -909 890.5 -879M890.5 -879Q837 -849 806.5 -792.5M806.5 -792.5Q776 -736 776 -654M2215.1 -1188L2215.1 -844M2285.1 -914L1486.1 -914M1556.1 -844L1556.1 -1188M1486.1 -1118L2285.1 -1118M1720.1 70L1720.1 -1293M1720.1 -1223Q1720.1 -1336 1767.1 -1411M1767.1 -1411Q1814.1 -1486 1893.6 -1523M1893.6 -1523Q1973.1 -1560 2069.1 -1560M2069.1 -1560Q2138.1 -1560 2191.6 -1549M2191.6 -1549Q2245.1 -1538 2270.1 -1529M2288 -1596.7L2198.2 -1257.3M2216.1 -1325Q2200.1 -1331 2175.1 -1336.5M2175.1 -1336.5Q2150.1 -1342 2118.1 -1342M2118.1 -1342Q2045.1 -1342 2013.6 -1306M2013.6 -1306Q1982.1 -1270 1982.1 -1204M1982.1 -1274L1982.1 70M2052.1 0L1650.1 0M2792.1 22Q2628.1 22 2508.1 -50M2508.1 -50Q2388.1 -122 2322.6 -252M2322.6 -252Q2257.1 -382 2257.1 -554M2257.1 -554Q2257.1 -727 2322.6 -857.5M2322.6 -857.5Q2388.1 -988 2508.1 -1060M2508.1 -1060Q2628.1 -1132 2792.1 -1132M2792.1 -1132Q2956.1 -1132 3076.1 -1060M3076.1 -1060Q3196.1 -988 3262.1 -857.5M3262.1 -857.5Q3328.1 -727 3328.1 -554M3328.1 -554Q3328.1 -382 3262.1 -252M3262.1 -252Q3196.1 -122 3076.1 -50M3076.1 -50Q2956.1 22 2792.1 22M2792.1 -190Q2883.1 -190 2942.1 -238.5M2942.1 -238.5Q3001.1 -287 3030.6 -370M3030.6 -370Q3060.1 -453 3060.1 -554M3060.1 -554Q3060.1 -657 3030.6 -740M3030.6 -740Q3001.1 -823 2942.1 -871.5M2942.1 -871.5Q2883.1 -920 2792.1 -920M2792.1 -920Q2703.1 -920 2643.1 -871.5M2643.1 -871.5Q2583.1 -823 2553.6 -740M2553.6 -740Q2524.1 -657 2524.1 -554M2524.1 -554Q2524.1 -453 2553.6 -370M2553.6 -370Q2583.1 -287 2643.1 -238.5M2643.1 -238.5Q2703.1 -190 2792.1 -190M3432.2 70L3432.2 -1188M3362.2 -1118L3757.2 -1118M3687.2 -1188L3687.2 -860M3687.2 -930L3699.2 -930M3699.2 -930Q3729.2 -1028 3804.2 -1080.5M3804.2 -1080.5Q3879.2 -1133 3975.2 -1133M3975.2 -1133Q3996.2 -1133 4023.7 -1131M4023.7 -1131Q4051.2 -1129 4069.2 -1126M4069.2 -1196L4069.2 -814M4069.2 -884Q4052.2 -890 4016.2 -894M4016.2 -894Q3980.2 -898 3947.2 -898M3947.2 -898Q3874.2 -898 3817.2 -867M3817.2 -867Q3760.2 -836 3727.7 -782M3727.7 -782Q3695.2 -728 3695.2 -656M3695.2 -726L3695.2 70M3765.2 0L3362.2 0M4127.2 70L4127.2 -1188M4057.2 -1118L4448.2 -1118M4378.2 -1188L4378.2 -857M4378.2 -927L4392.2 -927M4392.2 -927Q4427.2 -1023 4508.2 -1077.5M4508.2 -1077.5Q4589.2 -1132 4700.2 -1132M4700.2 -1132Q4814.2 -1132 4892.2 -1077M4892.2 -1077Q4970.2 -1022 5001.2 -927M5001.2 -927L5013.2 -927M5013.2 -927Q5051.2 -1020 5139.2 -1076M5139.2 -1076Q5227.2 -1132 5349.2 -1132M5349.2 -1132Q5503.2 -1132 5600.7 -1034.5M5600.7 -1034.5Q5698.2 -937 5698.2 -750M5698.2 -820L5698.2 70M5768.2 0L5364.2 0M5434.2 70L5434.2 -780M5434.2 -710Q5434.2 -813 5378.7 -861.5M5378.7 -861.5Q5323.2 -910 5243.2 -910M5243.2 -910Q5148.2 -910 5095.2 -850.5M5095.2 -850.5Q5042.2 -791 5042.2 -698M5042.2 -768L5042.2 70M5112.2 0L4712.2 0M4782.2 70L4782.2 -790M4782.2 -720Q4782.2 -807 4731.2 -858.5M4731.2 -858.5Q4680.2 -910 4596.2 -910M4596.2 -910Q4539.2 -910 4492.2 -881M4492.2 -881Q4445.2 -852 4417.7 -800M4417.7 -800Q4390.2 -748 4390.2 -680M4390.2 -750L4390.2 70M4460.2 0L4057.2 0M6173.2 23Q6066.2 23 5981.2 -15.5M5981.2 -15.5Q5896.2 -54 5847.2 -129M5847.2 -129Q5798.2 -204 5798.2 -314M5798.2 -314Q5798.2 -408 5833.2 -470M5833.2 -470Q5868.2 -532 5928.7 -569M5928.7 -569Q5989.2 -606 6065.2 -625.5M6065.2 -625.5Q6141.2 -645 6222.2 -653M6222.2 -653Q6321.2 -664 6382.2 -672M6382.2 -672Q6443.2 -680 6470.7 -698M6470.7 -698Q6498.2 -716 6498.2 -754M6498.2 -754L6498.2 -759M6498.2 -759Q6498.2 -840 6450.2 -885M6450.2 -885Q6402.2 -930 6310.2 -930M6310.2 -930Q6213.2 -930 6156.7 -888M6156.7 -888Q6100.2 -846 6080.2 -789M6149.5 -779.1L5765.9 -833.9M5835.2 -824Q5864.2 -926 5931.2 -994.5M5931.2 -994.5Q5998.2 -1063 6094.7 -1097.5M6094.7 -1097.5Q6191.2 -1132 6308.2 -1132M6308.2 -1132Q6388.2 -1132 6468.2 -1113.5M6468.2 -1113.5Q6548.2 -1095 6615.2 -1051M6615.2 -1051Q6682.2 -1007 6722.2 -933M6722.2 -933Q6762.2 -859 6762.2 -748M6762.2 -818L6762.2 70M6832.2 0L6439.2 0M6509.2 70L6509.2 -224M6509.2 -154L6501.2 -154M6501.2 -154Q6477.2 -108 6433.7 -67.5M6433.7 -67.5Q6390.2 -27 6325.7 -2M6325.7 -2Q6261.2 23 6173.2 23M6240.2 -171Q6320.2 -171 6378.2 -202.5M6378.2 -202.5Q6436.2 -234 6468.2 -286.5M6468.2 -286.5Q6500.2 -339 6500.2 -401M6500.2 -401L6500.2 -532M6500.2 -532Q6487.2 -522 6458.2 -513.5M6458.2 -513.5Q6429.2 -505 6392.2 -498M6392.2 -498Q6355.2 -491 6319.7 -486M6319.7 -486Q6284.2 -481 6258.2 -478M6258.2 -478Q6199.2 -470 6152.7 -451.5M6152.7 -451.5Q6106.2 -433 6079.2 -401M6079.2 -401Q6052.2 -369 6052.2 -318M6052.2 -318Q6052.2 -245 6105.2 -208M6105.2 -208Q6158.2 -171 6240.2 -171M7473.3 -1188L7473.3 -844M7543.3 -914L6762.3 -914M6832.3 -844L6832.3 -1188M6762.3 -1118L7543.3 -1118M6919.3 -1384L7322.3 -1384M7252.3 -1454L7252.3 -266M7252.3 -336Q7252.3 -270 7281.3 -238.5M7281.3 -238.5Q7310.3 -207 7373.3 -207M7373.3 -207Q7390.3 -207 7411.3 -210M7411.3 -210Q7432.3 -213 7449.3 -217M7434.3 -285.4L7509.2 57.4M7494.3 -11Q7452.3 2 7409.3 8.5M7409.3 8.5Q7366.3 15 7323.3 15M7323.3 15Q7167.3 15 7078.3 -67.5M7078.3 -67.5Q6989.3 -150 6989.3 -293M6989.3 -223L6989.3 -1454M7577.3 70L7577.3 -1188M7507.3 -1118L7910.3 -1118M7840.3 -1188L7840.3 70M7910.3 0L7507.3 0M8488.4 22Q8320.4 22 8198.4 -48.5M8198.4 -48.5Q8076.4 -119 8010.9 -248M8010.9 -248Q7945.4 -377 7945.4 -552M7945.4 -552Q7945.4 -725 8010.4 -855.5M8010.4 -855.5Q8075.4 -986 8193.4 -1059M8193.4 -1059Q8311.4 -1132 8471.4 -1132M8471.4 -1132Q8574.4 -1132 8666.9 -1099M8666.9 -1099Q8759.4 -1066 8830.9 -997M8830.9 -997Q8902.4 -928 8943.4 -821.5M8943.4 -821.5Q8984.4 -715 8984.4 -568M8984.4 -568L8984.4 -486M9054.4 -486L7998.4 -486M8068.4 -416L8068.4 -733M7998.4 -663L8923.4 -663M8853.4 -663L8730.4 -611M8730.4 -611Q8730.4 -706 8701.4 -776.5M8701.4 -776.5Q8672.4 -847 8615.4 -887M8615.4 -887Q8558.4 -927 8473.4 -927M8473.4 -927Q8388.4 -927 8328.4 -887M8328.4 -887Q8268.4 -847 8237.4 -779.5M8237.4 -779.5Q8206.4 -712 8206.4 -629M8206.4 -629L8206.4 -506M8206.4 -506Q8206.4 -404 8241.9 -331.5M8241.9 -331.5Q8277.4 -259 8341.9 -221M8341.9 -221Q8406.4 -183 8492.4 -183M8492.4 -183Q8548.4 -183 8594.9 -199M8594.9 -199Q8641.4 -215 8674.9 -247.5M8674.9 -247.5Q8708.4 -280 8726.4 -328M8656.8 -336.2L9041.9 -290.8M8972.4 -299Q8948.4 -202 8883.9 -129.5M8883.9 -129.5Q8819.4 -57 8718.9 -17.5M8718.9 -17.5Q8618.4 22 8488.4 22M1111 -1178L1111 -1086M1540 -711L1448 -711M1185 -670L1277 -670M1013 -863L1013 -955M822 -654L730 -654M1674.1 -1223L1766.1 -1223M2069.1 -1606L2069.1 -1514M2118.1 -1296L2118.1 -1388M2028.1 -1204L1936.1 -1204M2792.1 68L2792.1 -24M2211.1 -554L2303.1 -554M2792.1 -1178L2792.1 -1086M3374.1 -554L3282.1 -554M2792.1 -236L2792.1 -144M3014.1 -554L3106.1 -554M2792.1 -874L2792.1 -966M2570.1 -554L2478.1 -554M3975.2 -1179L3975.2 -1087M3947.2 -852L3947.2 -944M3741.2 -656L3649.2 -656M4700.2 -1178L4700.2 -1086M5349.2 -1178L5349.2 -1086M5744.2 -750L5652.2 -750M5388.2 -710L5480.2 -710M5243.2 -864L5243.2 -956M5088.2 -698L4996.2 -698M4736.2 -720L4828.2 -720M4596.2 -864L4596.2 -956M4436.2 -680L4344.2 -680M6173.2 69L6173.2 -23M5752.2 -314L5844.2 -314M6452.2 -754L6544.2 -754M6452.2 -759L6544.2 -759M6310.2 -884L6310.2 -976M6308.2 -1178L6308.2 -1086M6808.2 -748L6716.2 -748M6240.2 -217L6240.2 -125M6454.2 -401L6546.2 -401M6098.2 -318L6006.2 -318M7298.3 -336L7206.3 -336M7373.3 -253L7373.3 -161M7323.3 61L7323.3 -31M6943.3 -293L7035.3 -293M8488.4 68L8488.4 -24M7899.4 -552L7991.4 -552M8471.4 -1178L8471.4 -1086M9030.4 -568L8938.4 -568M8684.4 -611L8776.4 -611M8473.4 -881L8473.4 -973M8252.4 -629L8160.4 -629M8252.4 -506L8160.4 -506M8492.4 -229L8492.4 -137" fill="none" stroke="#141414" stroke-width="1" vector-effect="non-scaling-stroke"/>
+      </g>
+      <g class="wm-fill"><g transform="translate(4 64) scale(0.03974358974358974)"><use href="#wm-glyphs" fill="#141414"/></g></g>
+      <g transform="translate(4 64) scale(0.03974358974358974)" fill="#F04A23">
+        <rect x="97.0" y="-1525.7" width="263.0" height="263.0"/>
+        <rect x="7577.3" y="-1525.7" width="263.0" height="263.0"/>
+      </g>
+    </svg>
+  </div>
+  <div class="footer__legal label">
+    <span>© 2026 Informatie. All rights reserved.</span>
+    <span>No tracking without consent · Sources shown with every claim</span>
+  </div>
 </footer>
 
-</div>
 </div>
 </body>
 </html>

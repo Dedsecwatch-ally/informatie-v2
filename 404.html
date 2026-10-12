@@ -4,21 +4,31 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Page not found — Informatie</title>
+<meta name="robots" content="noindex">
+<meta name="theme-color" content="#F2F1EC">
 <link rel="icon" type="image/svg+xml" href="/favicon.svg">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Inter+Tight:wght@600&family=Inter:wght@400&display=swap">
 <style>
-body{margin:0;min-height:100vh;display:flex;align-items:center;justify-content:center;background:#F2F1EC;color:#141414;font-family:Inter,system-ui,sans-serif;padding:24px;box-sizing:border-box}
-main{max-width:640px;border:1px solid #D4D1C9;padding:40px 32px}
+*{box-sizing:border-box}
+body{margin:0;min-height:100vh;display:flex;align-items:center;justify-content:center;padding:24px;background-color:#F2F1EC;background-image:radial-gradient(circle at 1px 1px,#D4D1C9 1px,transparent 1.2px);background-size:24px 24px;color:#141414;font-family:Inter,system-ui,sans-serif}
+main{max-width:640px;border:1px solid #D4D1C9;background:#F2F1EC;padding:40px 32px}
+img{display:block;width:48px;height:48px;margin-bottom:32px}
 p.l{margin:0 0 16px;font-family:'IBM Plex Mono',monospace;font-size:12px;letter-spacing:.06em;color:#555}
-h1{margin:0;font-family:'Inter Tight',Inter,sans-serif;font-size:48px;line-height:.98;text-transform:uppercase;letter-spacing:-.02em}
-a{display:inline-flex;gap:12px;margin-top:28px;padding:14px 20px;background:#D4361A;color:#fff;text-decoration:none;font-family:'IBM Plex Mono',monospace;font-size:13px;letter-spacing:.06em}
-a:focus-visible{outline:2px solid #141414;outline-offset:2px}
+h1{margin:0;font-family:'Inter Tight',Inter,sans-serif;font-weight:600;font-size:clamp(32px,6vw,48px);line-height:.98;text-transform:uppercase;letter-spacing:-.02em}
+p.b{margin:16px 0 0;font-size:16px;line-height:26px}
+a{display:inline-flex;gap:24px;margin-top:28px;padding:16px 20px;background:#D4361A;color:#fff;text-decoration:none;font-family:'IBM Plex Mono',monospace;font-size:13px;letter-spacing:.06em;font-weight:500;transition:background-color 160ms cubic-bezier(.2,0,0,1)}
+a span{transition:transform 160ms cubic-bezier(.2,0,0,1)}
+a:hover{background:#141414}a:hover span{transform:translateX(5px)}
+a:focus-visible{outline:2px solid #141414;outline-offset:3px}
+@media (prefers-reduced-motion:reduce){a,a span{transition:none}}
 </style>
 </head>
 <body>
 <main>
+<img src="/brand/informatie-symbol.svg" alt="Informatie" width="48" height="48">
 <p class="l">[404] PAGE NOT FOUND</p>
 <h1>This page doesn't exist — but your options still do.</h1>
+<p class="b">The link may be out of date. Everything on the homepage is still here.</p>
 <a href="/">BACK TO HOME <span aria-hidden="true">→</span></a>
 </main>
 </body>

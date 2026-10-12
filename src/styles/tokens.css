@@ -1,0 +1,42 @@
+/* Informatie — design tokens (Brand Book v1.0) */
+:root {
+  /* Colour · paper ~70% · ink/graphite ~18% · stone/bone ~9% · signal ≤5% */
+  --paper: #F2F1EC;
+  --ink: #141414;
+  --signal: #F04A23;        /* marks & squares only */
+  --signal-deep: #D4361A;   /* buttons with white text · 4.8:1 */
+  --signal-text: #C2311A;   /* orange text on paper · 5.0:1 */
+  --graphite: #1C1C1C;
+  --slate: #555555;         /* labels, metadata · 6.6:1 */
+  --stone: #D4D1C9;         /* hairlines, grid, dividers */
+  --bone: #E4E1D8;          /* tags, quiet fills, hover */
+  --white: #FFFFFF;
+  /* Running text: a softer ink, mixed from the palette (≈ #313131 · 12.5:1 on paper). */
+  --text: color-mix(in srgb, var(--ink) 55%, var(--slate));
+  /* Small-text setting: tight tracking, compact leading (editorial, Heron-style). */
+  --text-tracking: -0.02em;
+
+  /* Type */
+  --font-display: 'Inter Tight', Inter, system-ui, sans-serif;
+  --font-text: Inter, system-ui, sans-serif;
+  --font-mono: 'IBM Plex Mono', ui-monospace, monospace;
+
+  /* Motion · "Motion explains. It never performs." */
+  --ease: cubic-bezier(.2, 0, 0, 1);
+  --t-micro: 160ms;   /* hover fills, arrow nudges (120–200) */
+  --t-reveal: 240ms;  /* progressive detail (200–280) */
+  --t-choice: 240ms;  /* comparison response */
+
+  /* Space */
+  --gutter: 24px;
+  --hair: 1px solid var(--stone);
+  --header-h: 64px;
+}
+
+@media (max-width: 640px) {
+  :root { --gutter: 16px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :root { --t-micro: 0ms; --t-reveal: 0ms; --t-choice: 0ms; }
+}
