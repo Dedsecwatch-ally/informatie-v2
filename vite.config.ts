@@ -1,5 +1,8 @@
 import { defineConfig } from 'vite';
 import { resolve } from 'node:path';
+import { fileURLToPath } from 'node:url';
+
+const configDirectory = fileURLToPath(new URL('.', import.meta.url));
 
 // Hosts allowed to reach the dev/preview server through a Cloudflare Tunnel.
 // A leading dot matches all subdomains. Add a named tunnel's custom domain here.
@@ -26,8 +29,8 @@ export default defineConfig({
     chunkSizeWarningLimit: 650,
     rollupOptions: {
       input: {
-        main: resolve(import.meta.dirname, 'index.html'),
-        notFound: resolve(import.meta.dirname, '404.html'),
+        main: resolve(configDirectory, 'index.html'),
+        notFound: resolve(configDirectory, '404.html'),
       },
     },
   },
